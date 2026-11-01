@@ -1,0 +1,509 @@
+{
+  "sha": "51fd1d09475dc4beeec70aa8a3343ef3005f966c",
+  "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/51fd1d09475dc4beeec70aa8a3343ef3005f966c",
+  "tree": [
+    {
+      "path": ".github",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "827b2bee092510214c2b04e612fd9eadf6290722",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/827b2bee092510214c2b04e612fd9eadf6290722"
+    },
+    {
+      "path": ".github/workflows",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "85ee138dbbdc686154c45d5260186246259bdf5f",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/85ee138dbbdc686154c45d5260186246259bdf5f"
+    },
+    {
+      "path": ".github/workflows/hacs.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a28ca4eb93e116a4121cebe7c0fb5a4d247d3212",
+      "size": 308,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/a28ca4eb93e116a4121cebe7c0fb5a4d247d3212"
+    },
+    {
+      "path": ".github/workflows/hassfest.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9791c0e88201d2bb0555ae764cdd52602b0f5a7d",
+      "size": 296,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/9791c0e88201d2bb0555ae764cdd52602b0f5a7d"
+    },
+    {
+      "path": ".github/workflows/tests.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "07d8211aa5af56545efb3a41b87b278370d4e7b0",
+      "size": 2047,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/07d8211aa5af56545efb3a41b87b278370d4e7b0"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "965ece02b3b3fb8ca90d9ee01a68ff8af2ee3493",
+      "size": 62,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/965ece02b3b3fb8ca90d9ee01a68ff8af2ee3493"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6755665794eeff62eb9f14fdb5bdd7a56ffd8218",
+      "size": 1065,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/6755665794eeff62eb9f14fdb5bdd7a56ffd8218"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a82f308298213426a82950efe0a3d5e9238f501",
+      "size": 8884,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/5a82f308298213426a82950efe0a3d5e9238f501"
+    },
+    {
+      "path": "custom_components",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "7dcb835362dac5087a927fab055f985155bf524c",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/7dcb835362dac5087a927fab055f985155bf524c"
+    },
+    {
+      "path": "custom_components/edifier_ble",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9534fd08e20e1c66bea4e7ec31b1560b7d134f78",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/9534fd08e20e1c66bea4e7ec31b1560b7d134f78"
+    },
+    {
+      "path": "custom_components/edifier_ble/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8f8023d3e78de8376a06310b311efaa9a7f87b73",
+      "size": 4101,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/8f8023d3e78de8376a06310b311efaa9a7f87b73"
+    },
+    {
+      "path": "custom_components/edifier_ble/binary_sensor.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45eea74c274f27adf00673963457d17b859f8029",
+      "size": 2250,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/45eea74c274f27adf00673963457d17b859f8029"
+    },
+    {
+      "path": "custom_components/edifier_ble/bluetooth_device.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b9e311bfc74f8e7e988fcaf357a9707aaf703ca",
+      "size": 2280,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/5b9e311bfc74f8e7e988fcaf357a9707aaf703ca"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "058b252158f87de7b2d9e5bf17d1c8e1e204f31c",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/058b252158f87de7b2d9e5bf17d1c8e1e204f31c"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/dark_icon.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f8096a6b26cc7d49b9a7c4f84dcab75e556a562b",
+      "size": 5486,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/f8096a6b26cc7d49b9a7c4f84dcab75e556a562b"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/dark_icon@2x.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "33abf4dd96c970610d964d4e2c8358630d2eaf72",
+      "size": 11289,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/33abf4dd96c970610d964d4e2c8358630d2eaf72"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/dark_logo.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "356a86d6d0300d6b9e712d2be2092a2854b8209b",
+      "size": 24575,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/356a86d6d0300d6b9e712d2be2092a2854b8209b"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/dark_logo@2x.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3de25f3cf24badcc012e9c2daf73b3857a92d1f",
+      "size": 57778,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/f3de25f3cf24badcc012e9c2daf73b3857a92d1f"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/icon.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3b190366fd878413c9e8ebd24d616ce5ca51ea09",
+      "size": 4780,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/3b190366fd878413c9e8ebd24d616ce5ca51ea09"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/icon@2x.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9637aef836a5d9bc70039cda5b72b4318922c142",
+      "size": 10166,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/9637aef836a5d9bc70039cda5b72b4318922c142"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/logo.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "570e104e907ec50135e79a63c29d815602311db0",
+      "size": 22266,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/570e104e907ec50135e79a63c29d815602311db0"
+    },
+    {
+      "path": "custom_components/edifier_ble/brand/logo@2x.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dbd9e28dee6c5892e97644a69bef4e12ceeb0ee4",
+      "size": 53586,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/dbd9e28dee6c5892e97644a69bef4e12ceeb0ee4"
+    },
+    {
+      "path": "custom_components/edifier_ble/button.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c4028b5050ed89525492427e537c9c73bf1ece84",
+      "size": 2513,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/c4028b5050ed89525492427e537c9c73bf1ece84"
+    },
+    {
+      "path": "custom_components/edifier_ble/config_flow.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c0c63318a38383d15d9a8ce8794917d04a52bd9b",
+      "size": 3820,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/c0c63318a38383d15d9a8ce8794917d04a52bd9b"
+    },
+    {
+      "path": "custom_components/edifier_ble/const.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a9bae781a186c9f0eb00a526655335ea9402c09",
+      "size": 296,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/5a9bae781a186c9f0eb00a526655335ea9402c09"
+    },
+    {
+      "path": "custom_components/edifier_ble/coordinator.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65e4f0c1fb5a5a05179af6ed378cc53805227035",
+      "size": 7601,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/65e4f0c1fb5a5a05179af6ed378cc53805227035"
+    },
+    {
+      "path": "custom_components/edifier_ble/diagnostics.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e4927d0e1530725701d61b7063f98ce3f2a0426",
+      "size": 2443,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/4e4927d0e1530725701d61b7063f98ce3f2a0426"
+    },
+    {
+      "path": "custom_components/edifier_ble/entity.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35f4998ff71de5191d74063709bd1903ebdc4343",
+      "size": 2119,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/35f4998ff71de5191d74063709bd1903ebdc4343"
+    },
+    {
+      "path": "custom_components/edifier_ble/icons.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dc129cf6927a55baf70f473ebcca027d32b82166",
+      "size": 903,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/dc129cf6927a55baf70f473ebcca027d32b82166"
+    },
+    {
+      "path": "custom_components/edifier_ble/manifest.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b605dadc88c08e606afc44dc961daf0673bebff9",
+      "size": 681,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/b605dadc88c08e606afc44dc961daf0673bebff9"
+    },
+    {
+      "path": "custom_components/edifier_ble/number.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c3683cc1d28b7d256fb9106b5e593eb27121c251",
+      "size": 3350,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/c3683cc1d28b7d256fb9106b5e593eb27121c251"
+    },
+    {
+      "path": "custom_components/edifier_ble/protocol",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4fd393245e80a8b806ec2e81bc4c80ab75a13164",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/4fd393245e80a8b806ec2e81bc4c80ab75a13164"
+    },
+    {
+      "path": "custom_components/edifier_ble/protocol/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5481d7840c9b42dabf9813e132165ce1de1bd72",
+      "size": 70,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/e5481d7840c9b42dabf9813e132165ce1de1bd72"
+    },
+    {
+      "path": "custom_components/edifier_ble/protocol/device.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f73e0b09665b2fc4ffdeda320dfb8b0f525881d9",
+      "size": 31130,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/f73e0b09665b2fc4ffdeda320dfb8b0f525881d9"
+    },
+    {
+      "path": "custom_components/edifier_ble/protocol/frames.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c85f8b8b289bdd86a45a742754a0c06e79dec8f7",
+      "size": 1293,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/c85f8b8b289bdd86a45a742754a0c06e79dec8f7"
+    },
+    {
+      "path": "custom_components/edifier_ble/quality_scale.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4071e4425efe9dd7050b29491688cb227e92c97f",
+      "size": 9744,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/4071e4425efe9dd7050b29491688cb227e92c97f"
+    },
+    {
+      "path": "custom_components/edifier_ble/select.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d33adfa98ea134ca3ffe6d2ba987bec98c4a1a75",
+      "size": 2420,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/d33adfa98ea134ca3ffe6d2ba987bec98c4a1a75"
+    },
+    {
+      "path": "custom_components/edifier_ble/sensor.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a511184145af38196a2921d528535ef59d5c6756",
+      "size": 2151,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/a511184145af38196a2921d528535ef59d5c6756"
+    },
+    {
+      "path": "custom_components/edifier_ble/strings.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "902815c7813dd713a83ebabdc42c463eae801007",
+      "size": 4411,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/902815c7813dd713a83ebabdc42c463eae801007"
+    },
+    {
+      "path": "custom_components/edifier_ble/switch.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "079eda8f53a5c215cc73c159b8c4541e82a8c48d",
+      "size": 1528,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/079eda8f53a5c215cc73c159b8c4541e82a8c48d"
+    },
+    {
+      "path": "custom_components/edifier_ble/text.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9bdb59c9f885c23698c4d39adcd34306f03de8be",
+      "size": 1438,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/9bdb59c9f885c23698c4d39adcd34306f03de8be"
+    },
+    {
+      "path": "custom_components/edifier_ble/translations",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c9e77cb4582b61a8b5c288de428402025c48b075",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/c9e77cb4582b61a8b5c288de428402025c48b075"
+    },
+    {
+      "path": "custom_components/edifier_ble/translations/en.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "902815c7813dd713a83ebabdc42c463eae801007",
+      "size": 4411,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/902815c7813dd713a83ebabdc42c463eae801007"
+    },
+    {
+      "path": "docs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0f3d200ec13d52102b09035f8b832d9c31a3bd37",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/0f3d200ec13d52102b09035f8b832d9c31a3bd37"
+    },
+    {
+      "path": "docs/edifier-m60-ble.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9389664dfb3d1bbe31c9ccdadb1222c1e4f6c689",
+      "size": 11623,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/9389664dfb3d1bbe31c9ccdadb1222c1e4f6c689"
+    },
+    {
+      "path": "docs/edifier-m90-ble.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27eddcdd7a4fe274184e55e1b62f3796e9fe2e32",
+      "size": 11756,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/27eddcdd7a4fe274184e55e1b62f3796e9fe2e32"
+    },
+    {
+      "path": "hacs.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "83ec0e74a7c01d450a4a7d544301b4d89a84786c",
+      "size": 84,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/83ec0e74a7c01d450a4a7d544301b4d89a84786c"
+    },
+    {
+      "path": "mypy.ini",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bdba599cac4b62a8695efd844ccfc52ce115d29c",
+      "size": 657,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/bdba599cac4b62a8695efd844ccfc52ce115d29c"
+    },
+    {
+      "path": "scripts",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8c85801867c0b7554f49944059f5c08582d6ec0c",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/8c85801867c0b7554f49944059f5c08582d6ec0c"
+    },
+    {
+      "path": "scripts/connect_m60_ble.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "19c227a628a65573205cf2a87dcc51464b6fcb2b",
+      "size": 5623,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/19c227a628a65573205cf2a87dcc51464b6fcb2b"
+    },
+    {
+      "path": "scripts/connect_m90_ble.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "1444d29210c4ee8cb49d023ed428f02568890e20",
+      "size": 5649,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/1444d29210c4ee8cb49d023ed428f02568890e20"
+    },
+    {
+      "path": "scripts/m90_session.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "b5f54f19677cd916e7d25dd8645804c5bb5f9c7b",
+      "size": 9998,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/b5f54f19677cd916e7d25dd8645804c5bb5f9c7b"
+    },
+    {
+      "path": "tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4b60c463a79df31cca17e278adba76330e2e548f",
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/trees/4b60c463a79df31cca17e278adba76330e2e548f"
+    },
+    {
+      "path": "tests/test_advanced_entities.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5840b6a0eaba061bcf8dabae9940a185a353e3af",
+      "size": 12993,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/5840b6a0eaba061bcf8dabae9940a185a353e3af"
+    },
+    {
+      "path": "tests/test_bluetooth_device.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8a7d7a01cf60fd0bcfa1ac36847c565f1f98287b",
+      "size": 4455,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/8a7d7a01cf60fd0bcfa1ac36847c565f1f98287b"
+    },
+    {
+      "path": "tests/test_button.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4694a741f9843aa47d41fb57e09a527c895a1f93",
+      "size": 3266,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/4694a741f9843aa47d41fb57e09a527c895a1f93"
+    },
+    {
+      "path": "tests/test_config_flow.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43f31aaea37a4bde7f8c4583eb211a3ec0d407c4",
+      "size": 11628,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/43f31aaea37a4bde7f8c4583eb211a3ec0d407c4"
+    },
+    {
+      "path": "tests/test_coordinator.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "39b43f0f24dfe21ab1c9b8a6eabf919725fac48a",
+      "size": 10498,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/39b43f0f24dfe21ab1c9b8a6eabf919725fac48a"
+    },
+    {
+      "path": "tests/test_device_controls.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7563560aa0287fe0c4a2c5aaedf373dbbe59494",
+      "size": 20450,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/a7563560aa0287fe0c4a2c5aaedf373dbbe59494"
+    },
+    {
+      "path": "tests/test_diagnostics.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0455482d6e39966c688242ae93e9ecb0f276370f",
+      "size": 3850,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/0455482d6e39966c688242ae93e9ecb0f276370f"
+    },
+    {
+      "path": "tests/test_entity_actions.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "db5f3c1719c21af5e90067e81b17290577564dbf",
+      "size": 5583,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/db5f3c1719c21af5e90067e81b17290577564dbf"
+    },
+    {
+      "path": "tests/test_protocol.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bd67bafb12f3c0763acab12c0759194e82d67806",
+      "size": 24156,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/bd67bafb12f3c0763acab12c0759194e82d67806"
+    },
+    {
+      "path": "tests/test_setup.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "770e3adb2eafd9c5a659a96684cd5715003131b5",
+      "size": 7354,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/770e3adb2eafd9c5a659a96684cd5715003131b5"
+    },
+    {
+      "path": "tests/test_translations.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1338bbcbaa6bdae36ea35513365bf4f042dd1b51",
+      "size": 4810,
+      "url": "https://api.github.com/repos/kralonur/edifier-speakers-ble/git/blobs/1338bbcbaa6bdae36ea35513365bf4f042dd1b51"
+    }
+  ],
+  "truncated": false
+}

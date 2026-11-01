@@ -1,0 +1,38 @@
+# ---- .NET / Visual Studio ----
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+publish/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.idea/
+*.binlog
+artifacts/
+TestResults/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# NuGet
+*.nupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# ---- Python (tools/phase0_probe) ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ---- OS ----
+Thumbs.db
+desktop.ini
+.DS_Store

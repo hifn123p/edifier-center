@@ -1,0 +1,110 @@
+{
+  "sha": "177e323279037549287b1125c9db37e28485e032",
+  "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/trees/177e323279037549287b1125c9db37e28485e032",
+  "tree": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7a60b85e148f80966a550e5ab6a762a907c69ca6",
+      "size": 19,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/7a60b85e148f80966a550e5ab6a762a907c69ca6"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3e418719d6bf89f5debcde539eda82f25c409b8c",
+      "size": 1064,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/3e418719d6bf89f5debcde539eda82f25c409b8c"
+    },
+    {
+      "path": "Panel.qml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "91c87ff795e7f9c24494220c4edc69a1aa0dcfc0",
+      "size": 25418,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/91c87ff795e7f9c24494220c4edc69a1aa0dcfc0"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3736fa7f23d310f97d9b279565e68f4f29f143cb",
+      "size": 4818,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/3736fa7f23d310f97d9b279565e68f4f29f143cb"
+    },
+    {
+      "path": "Service.qml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "20d72cd8204d9c6609dbad9487899e2fecd7e669",
+      "size": 11701,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/20d72cd8204d9c6609dbad9487899e2fecd7e669"
+    },
+    {
+      "path": "SpeakerIcon.qml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "abab995ebee46b6337a50f530e540bad4bd8319c",
+      "size": 436,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/abab995ebee46b6337a50f530e540bad4bd8319c"
+    },
+    {
+      "path": "manifest.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "012f5bfeb444dfcf1768cd0c916da712c95c567f",
+      "size": 964,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/012f5bfeb444dfcf1768cd0c916da712c95c567f"
+    },
+    {
+      "path": "preview.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45d7ceeb0d0ab4e4f0bafc3844f89ab84b7b33fb",
+      "size": 295504,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/45d7ceeb0d0ab4e4f0bafc3844f89ab84b7b33fb"
+    },
+    {
+      "path": "scripts",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d7f88be6f34823177da9549479b9973579162885",
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/trees/d7f88be6f34823177da9549479b9973579162885"
+    },
+    {
+      "path": "scripts/edifier_ctl.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c96a81bb739539255ab997cb11a77509e9a24b7d",
+      "size": 4773,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/c96a81bb739539255ab997cb11a77509e9a24b7d"
+    },
+    {
+      "path": "scripts/edifier_daemon.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f1c34eadfdb63e79015552ab3b49187934938729",
+      "size": 22079,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/f1c34eadfdb63e79015552ab3b49187934938729"
+    },
+    {
+      "path": "scripts/edifier_protocol.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ebe090c3e0b6211bec8922f3db4769be4a2738f",
+      "size": 5149,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/2ebe090c3e0b6211bec8922f3db4769be4a2738f"
+    },
+    {
+      "path": "scripts/test_edifier.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3f87a8405c4a0538b57f01eff350a8087f5f39ef",
+      "size": 1030,
+      "url": "https://api.github.com/repos/Devis99/omarchy-edifier-mr5/git/blobs/3f87a8405c4a0538b57f01eff350a8087f5f39ef"
+    }
+  ],
+  "truncated": false
+}

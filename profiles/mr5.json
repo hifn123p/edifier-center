@@ -1,0 +1,65 @@
+{
+  "$schema": "./mr5.schema.json",
+  "model": "EDIFIER MR5BT",
+  "protocol": "connex-v2",
+  "discovery": {
+    "searchServiceUuids": [
+      "00003a01-0000-1000-8000-00805f9b34fb",
+      "00007e03-0000-1000-8000-00805f9b34fb"
+    ],
+    "serviceUuids": [
+      "48093a01-1a48-11e9-ab14-d663bd873d93",
+      "48097e03-1a48-11e9-ab14-d663bd873d93"
+    ],
+    "notifyCharacteristicUuid": "48090001-1a48-11e9-ab14-d663bd873d93",
+    "writeCharacteristicUuid": "48090002-1a48-11e9-ab14-d663bd873d93",
+    "manufacturerId": 2016,
+    "advertisedName": "EDIFIER BLE"
+  },
+  "appCode": 12,
+  "volume": {
+    "max": 30,
+    "throttleMs": 150
+  },
+  "soundModes": [
+    { "id": null, "label": "监听" },
+    { "id": null, "label": "音乐" },
+    { "id": null, "label": "自定义" }
+  ],
+  "customEq": {
+    "eqIndex": 12,
+    "bandCount": 9,
+    "frequenciesHz": [62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
+    "stepDb": 0.5,
+    "uiRangeDb": [-6, 6],
+    "gainCodeZeroDb": null,
+    "gainDbPerCode": null
+  },
+  "acousticTuning": {
+    "lowCutoffHz": { "min": 20, "max": 100, "step": 5 },
+    "slopesDbPerOct": [-6, -12, -18, -24],
+    "acousticSpaceDb": [0, -1, -2, -3, -4],
+    "desktopControl": [false, true]
+  },
+  "inputs": {
+    "group": null,
+    "labels": {}
+  },
+  "decodeStatus": {
+    "0": "标准",
+    "4": "无线 Hi-Res",
+    "5": "有线 Hi-Res",
+    "9": "192 kHz"
+  },
+  "signalBarsDbm": { "excellent": -55, "good": -70, "fair": -80 },
+  "session": {
+    "initialRead": ["support", "volume", "eq", "customEq", "version", "state"],
+    "pollIntervalSeconds": 5,
+    "reconnectBackoffSeconds": [1, 2, 5, 10, 30]
+  },
+  "forbidden": ["reset(0x07)", "shutdown(0xCE)", "disconnectBt(0xCD)", "ota", "factoryReset", "unpair"],
+  "calibration": {
+    "phase": "PENDING",
+    "note": "soundModes.id / inputs.group+labels / customEq.gainCodeZeroDb+gainDbPerCode 由 tools/phase0_probe.py 标定后回填"
+  }
+}

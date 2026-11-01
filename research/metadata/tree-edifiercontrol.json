@@ -1,0 +1,484 @@
+{
+  "sha": "f16c0b30e0a5274cbf777635a2e6ff824885d1cb",
+  "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/f16c0b30e0a5274cbf777635a2e6ff824885d1cb",
+  "tree": [
+    {
+      "path": ".github",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9424ede099f12d01145080f461d440d1bc8be5e5",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/9424ede099f12d01145080f461d440d1bc8be5e5"
+    },
+    {
+      "path": ".github/workflows",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e6b53794189c98700fdeb1ca61b0bfeb3a772184",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/e6b53794189c98700fdeb1ca61b0bfeb3a772184"
+    },
+    {
+      "path": ".github/workflows/ci-release.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "190968362e83ca2b5d769dc8aeef67b335d89bf9",
+      "size": 1768,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/190968362e83ca2b5d769dc8aeef67b335d89bf9"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3e7d315a1cb84997f761d64bfe092599c91b0a00",
+      "size": 408,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/3e7d315a1cb84997f761d64bfe092599c91b0a00"
+    },
+    {
+      "path": "EdifierControl.sln",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "93885948efa2210f8dd615b44540bf6511a608ae",
+      "size": 1056,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/93885948efa2210f8dd615b44540bf6511a608ae"
+    },
+    {
+      "path": "EdifierControl.vcxproj",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8649ea90d9b568a0f9b6f2c2bcc1e2429e2331d3",
+      "size": 8264,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/8649ea90d9b568a0f9b6f2c2bcc1e2429e2331d3"
+    },
+    {
+      "path": "EdifierControl.vcxproj.filters",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6c69a0155d58ef4490f8a1e05d72fb2d1861a07c",
+      "size": 6233,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/6c69a0155d58ef4490f8a1e05d72fb2d1861a07c"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67bb9a9a87a438a0a0f68f022f7a76503e72997f",
+      "size": 1086,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/67bb9a9a87a438a0a0f68f022f7a76503e72997f"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd75468379accd9f720c6e56acd5d1d98518d40f",
+      "size": 5963,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/cd75468379accd9f720c6e56acd5d1d98518d40f"
+    },
+    {
+      "path": "assets",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "52b58be2339c6a6121a27c20f5500c106b939e10",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/52b58be2339c6a6121a27c20f5500c106b939e10"
+    },
+    {
+      "path": "assets/NOTICE.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28d025d10866c79dc44aac3e2bfca869014e36f4",
+      "size": 237,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/28d025d10866c79dc44aac3e2bfca869014e36f4"
+    },
+    {
+      "path": "assets/app.ico",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "10e99cf7988f466f09f440b70e9c3c95d7318f51",
+      "size": 86671,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/10e99cf7988f466f09f440b70e9c3c95d7318f51"
+    },
+    {
+      "path": "assets/app.rc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bd729467f0a68f1e4d8868760251e2f5587d8377",
+      "size": 39,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/bd729467f0a68f1e4d8868760251e2f5587d8377"
+    },
+    {
+      "path": "assets/tray.ico",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "92085bb5da4304f039c04249ee61a8ee3b8b76ed",
+      "size": 24249,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/92085bb5da4304f039c04249ee61a8ee3b8b76ed"
+    },
+    {
+      "path": "src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "976502190c9ed64b92946244ba06919a5b832aea",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/976502190c9ed64b92946244ba06919a5b832aea"
+    },
+    {
+      "path": "src/app",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "608c6f5b20624fc370d9b6ce5f3ee96743354f97",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/608c6f5b20624fc370d9b6ce5f3ee96743354f97"
+    },
+    {
+      "path": "src/app/app_window.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0df640a10286d178d1185f72578cd5fea837648",
+      "size": 12087,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/f0df640a10286d178d1185f72578cd5fea837648"
+    },
+    {
+      "path": "src/app/app_window.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c0745c670ff2d17790a20f87085e15f5bd427b0",
+      "size": 2196,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/8c0745c670ff2d17790a20f87085e15f5bd427b0"
+    },
+    {
+      "path": "src/app/audio_meter.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a058ab0b2957a17a85ccd57a1ab0bbb649693d50",
+      "size": 13327,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/a058ab0b2957a17a85ccd57a1ab0bbb649693d50"
+    },
+    {
+      "path": "src/app/audio_meter.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9845e370493d990a69daf5ce77a93d07a4d8e792",
+      "size": 1056,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/9845e370493d990a69daf5ce77a93d07a4d8e792"
+    },
+    {
+      "path": "src/app/autorun.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa298dcd0176449bbfd94a4f68de8688723b406f",
+      "size": 1361,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/fa298dcd0176449bbfd94a4f68de8688723b406f"
+    },
+    {
+      "path": "src/app/d3d_renderer.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fcb8b76c90ce0d88ccbb55edb05e8f9c77b05676",
+      "size": 5267,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/fcb8b76c90ce0d88ccbb55edb05e8f9c77b05676"
+    },
+    {
+      "path": "src/app/d3d_renderer.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ef86ae784a96e3652e7efbfd27b48a7706e5293c",
+      "size": 1093,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/ef86ae784a96e3652e7efbfd27b48a7706e5293c"
+    },
+    {
+      "path": "src/app/main.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a24b17a95aab965cc49da9add8afb75788e6293a",
+      "size": 8258,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/a24b17a95aab965cc49da9add8afb75788e6293a"
+    },
+    {
+      "path": "src/app/osd_window.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f83428a68c4c84e19326e971fdd48ffe6153aec",
+      "size": 8465,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/7f83428a68c4c84e19326e971fdd48ffe6153aec"
+    },
+    {
+      "path": "src/app/osd_window.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "078627c04819b5c82db008436eaa6ed2698d2efc",
+      "size": 235,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/078627c04819b5c82db008436eaa6ed2698d2efc"
+    },
+    {
+      "path": "src/app/single_instance.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bda9c36c99cbfb8370a03c6c96de1c947babd21f",
+      "size": 903,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/bda9c36c99cbfb8370a03c6c96de1c947babd21f"
+    },
+    {
+      "path": "src/app/single_instance.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9578ca9bd6c05ad6eee46bb800e1fa024b36130e",
+      "size": 580,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/9578ca9bd6c05ad6eee46bb800e1fa024b36130e"
+    },
+    {
+      "path": "src/app/tray_manager.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e06cfaa226ee6065b787c30544e4fe002baab147",
+      "size": 8094,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/e06cfaa226ee6065b787c30544e4fe002baab147"
+    },
+    {
+      "path": "src/app/tray_manager.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b9cd2f80468ae6821356221004db282cb66c801",
+      "size": 1030,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/9b9cd2f80468ae6821356221004db282cb66c801"
+    },
+    {
+      "path": "src/ble",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6c2cc4216b774a5df18cae1683be0a2d9422f166",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/6c2cc4216b774a5df18cae1683be0a2d9422f166"
+    },
+    {
+      "path": "src/ble/ble_client.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d78649c2bc58982c1e43f4d92f20c21a83268495",
+      "size": 27749,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/d78649c2bc58982c1e43f4d92f20c21a83268495"
+    },
+    {
+      "path": "src/ble/ble_client.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "91251676d652a20129a93a62516cef15d6cf3811",
+      "size": 2113,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/91251676d652a20129a93a62516cef15d6cf3811"
+    },
+    {
+      "path": "src/protocol",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a6f7438e729d16bd8bc7efb069029afb900be36b",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/a6f7438e729d16bd8bc7efb069029afb900be36b"
+    },
+    {
+      "path": "src/protocol/protocol.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0d41d816439ab87463f1299805077775699b604d",
+      "size": 9841,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/0d41d816439ab87463f1299805077775699b604d"
+    },
+    {
+      "path": "src/protocol/protocol.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "debfeee22a7304583d1349df004920f40e6ef081",
+      "size": 3588,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/debfeee22a7304583d1349df004920f40e6ef081"
+    },
+    {
+      "path": "src/ui",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "dce017cc9265c7aac9def096a1c82137b7af0a88",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/dce017cc9265c7aac9def096a1c82137b7af0a88"
+    },
+    {
+      "path": "src/ui/ui.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a600c9add8786f78feb71a1a3c3934cf80fb28d",
+      "size": 73675,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/2a600c9add8786f78feb71a1a3c3934cf80fb28d"
+    },
+    {
+      "path": "src/ui/ui.hpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e1ae6e6b388bb14fc3deef5111713efcc597fb38",
+      "size": 611,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/e1ae6e6b388bb14fc3deef5111713efcc597fb38"
+    },
+    {
+      "path": "third_party",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "775e82bacb31edaa044b73cc3fad202cdf3d46cf",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/775e82bacb31edaa044b73cc3fad202cdf3d46cf"
+    },
+    {
+      "path": "third_party/imgui",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c54b47c45a659d715b3fcf50c444a7c4ae24fe82",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/c54b47c45a659d715b3fcf50c444a7c4ae24fe82"
+    },
+    {
+      "path": "third_party/imgui/.editorconfig",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5adfefa20d8ed8288d2485486c3a21775da68cb1",
+      "size": 1063,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/5adfefa20d8ed8288d2485486c3a21775da68cb1"
+    },
+    {
+      "path": "third_party/imgui/.gitattributes",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d48470eeff11532332505d3e73aab440bb0f170b",
+      "size": 397,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/d48470eeff11532332505d3e73aab440bb0f170b"
+    },
+    {
+      "path": "third_party/imgui/.gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "15a908273eae16587e0ba64ac26d9255525f3d50",
+      "size": 1246,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/15a908273eae16587e0ba64ac26d9255525f3d50"
+    },
+    {
+      "path": "third_party/imgui/LICENSE.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "00ae473abe62bf1c53b333613bd9e05aa72e2ca0",
+      "size": 1083,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/00ae473abe62bf1c53b333613bd9e05aa72e2ca0"
+    },
+    {
+      "path": "third_party/imgui/backends",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3b3f4f11584f3568e905f3560af8c14980f7fa84",
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/trees/3b3f4f11584f3568e905f3560af8c14980f7fa84"
+    },
+    {
+      "path": "third_party/imgui/backends/imgui_impl_dx11.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9f39588810eb648a5c4569a5f157cb94903642f5",
+      "size": 30818,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/9f39588810eb648a5c4569a5f157cb94903642f5"
+    },
+    {
+      "path": "third_party/imgui/backends/imgui_impl_dx11.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "772c1b920c0546be02657f2812258cc8e2b6bd17",
+      "size": 2335,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/772c1b920c0546be02657f2812258cc8e2b6bd17"
+    },
+    {
+      "path": "third_party/imgui/backends/imgui_impl_win32.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c749515d221fcb2916833a5efda095ff684f6ea",
+      "size": 49602,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/2c749515d221fcb2916833a5efda095ff684f6ea"
+    },
+    {
+      "path": "third_party/imgui/backends/imgui_impl_win32.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "083fe385f6fa0738ecb43756e7e97a007082e235",
+      "size": 3549,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/083fe385f6fa0738ecb43756e7e97a007082e235"
+    },
+    {
+      "path": "third_party/imgui/imconfig.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a1e29e849bc8c6125a0c567fa6cb528a293025cb",
+      "size": 11579,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/a1e29e849bc8c6125a0c567fa6cb528a293025cb"
+    },
+    {
+      "path": "third_party/imgui/imgui.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7ec19227897180787843dc65b1238ac9494433c5",
+      "size": 882057,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/7ec19227897180787843dc65b1238ac9494433c5"
+    },
+    {
+      "path": "third_party/imgui/imgui.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75750ae10904989cd7bdefb413fabd056696816a",
+      "size": 378236,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/75750ae10904989cd7bdefb413fabd056696816a"
+    },
+    {
+      "path": "third_party/imgui/imgui_demo.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "10fa434dca7fdb11e509067fa4e2201b8384367b",
+      "size": 557654,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/10fa434dca7fdb11e509067fa4e2201b8384367b"
+    },
+    {
+      "path": "third_party/imgui/imgui_draw.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2731015291896890d5f46c8563198074fb7f14cb",
+      "size": 258761,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/2731015291896890d5f46c8563198074fb7f14cb"
+    },
+    {
+      "path": "third_party/imgui/imgui_internal.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ddf9ea3e9afd59e948fbf34c3edf614d1623b2ef",
+      "size": 272833,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/ddf9ea3e9afd59e948fbf34c3edf614d1623b2ef"
+    },
+    {
+      "path": "third_party/imgui/imgui_tables.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c98aea2d1cc7c6a2d64e8d27c70d6c724005f5ba",
+      "size": 247597,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/c98aea2d1cc7c6a2d64e8d27c70d6c724005f5ba"
+    },
+    {
+      "path": "third_party/imgui/imgui_widgets.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c997e17b61c6d506b496f6f990e67c88cace65f0",
+      "size": 517769,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/c997e17b61c6d506b496f6f990e67c88cace65f0"
+    },
+    {
+      "path": "third_party/imgui/imstb_rectpack.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f6917e7a6e56a03dcee169bf4e08c32611b761c9",
+      "size": 20344,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/f6917e7a6e56a03dcee169bf4e08c32611b761c9"
+    },
+    {
+      "path": "third_party/imgui/imstb_textedit.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b7a761c85381993be0f4cd78539f277c06eb407e",
+      "size": 57128,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/b7a761c85381993be0f4cd78539f277c06eb407e"
+    },
+    {
+      "path": "third_party/imgui/imstb_truetype.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "976f09cb92780b0d0db6fdfa3b2714df2567b320",
+      "size": 199485,
+      "url": "https://api.github.com/repos/D4n13l3k00/EdifierControl/git/blobs/976f09cb92780b0d0db6fdfa3b2714df2567b320"
+    }
+  ],
+  "truncated": false
+}

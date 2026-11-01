@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edifier Center — UI 设计方案 v1.1</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; padding: 28px 20px 64px;
+    background: light-dark(#fcfcfd, #15171b);
+    color: light-dark(#1b1b1f, #e8e8ec);
+    font-family: "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+    display: flex; justify-content: center;
+  }
+  body > div { width: 100%; }
+  .viz-dotted-background {
+    background-image: radial-gradient(circle at 1px 1px, color-mix(in srgb, currentColor 16%, transparent) 1px, transparent 0);
+    background-size: 14px 14px; opacity: 1;
+  }
+</style>
+</head>
+<body>
+<div id="ec-design" lang="zh-CN">
+
+  <style>
+    /* ============ Edifier Center 设计稿 · 产品专属令牌（不使用宿主工具类） ============ */
+    #ec-design {
+      --ec-font: "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+      --ec-accent: #c07a45;            /* 音箱铜膜单元主色 */
+      --ec-radius: 8px;                /* Win11 flyout 圆角 */
+      --ec-green: #3fb950;
+      --ec-gray: #9a9a9f;
+      --ec-ink: light-dark(#1b1b1b, #e8e8ec);
+      --ec-amber: #d7a013;
+      font-family: var(--ec-font);
+      color: var(--foreground);
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    #ec-design h2 { margin: 0 0 4px; }
+    #ec-design h3.ec-h { margin: 28px 0 10px; display: flex; align-items: baseline; gap: 8px; }
+    #ec-design h3.ec-h > span { color: var(--muted-foreground); font-weight: 400; }
+    .ec-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 0; }
+    .ec-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; padding: 3px 9px; border-radius: 999px;
+      border: 1px solid var(--border); color: var(--muted-foreground);
+    }
+    .ec-chip b { color: var(--foreground); font-weight: 500; }
+    .ec-cap { font-size: 11px; color: var(--muted-foreground); margin: 8px 2px 0; line-height: 1.6; }
+    .ec-cap code { font-family: inherit; background: var(--muted); padding: 1px 5px; border-radius: 4px; }
+    .ec-stage { border-radius: 12px; padding: 22px 18px; display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start; justify-content: center; }
+    .ec-col { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+
+    /* ============ 滑条（Win11 风格，仅 transform/opacity 动画） ============ */
+    #ec-design input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      background: transparent; margin: 0; cursor: pointer; height: 20px;
+    }
+    #ec-design input[type="range"]::-webkit-slider-runnable-track {
+      height: 4px; border-radius: 2px;
+      background: linear-gradient(to right, var(--sl-fill, var(--ec-accent)) var(--p, 50%), var(--f-track) 0);
+    }
+    #ec-design input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+      background: light-dark(#ffffff, #ffffff);
+      border: 4px solid var(--f-bg);
+      box-shadow: 0 0 0 1px rgba(0,0,0,.18); margin-top: -6px;
+    }
+    #ec-design input[type="range"]::-moz-range-track {
+      height: 4px; border-radius: 2px;
+      background: linear-gradient(to right, var(--sl-fill, var(--ec-accent)) var(--p, 50%), var(--f-track) 0);
+    }
+    #ec-design input[type="range"]::-moz-range-thumb {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #fff; border: 4px solid var(--f-bg); box-shadow: 0 0 0 1px rgba(0,0,0,.18);
+    }
+    #ec-design input[type="range"]:focus-visible { outline: 2px solid var(--ec-accent); outline-offset: 3px; border-radius: 4px; }
+
+    /* ============ 飞出面板（产品 Mockup，亮/暗由 color-scheme 强制） ============ */
+    .ec-fly {
+      color-scheme: light;
+      width: 360px; border-radius: var(--ec-radius);
+      background: linear-gradient(180deg, light-dark(#fafafc, #272727), light-dark(#f2f2f5, #1f1f1f));
+      border: 1px solid light-dark(rgba(0,0,0,.09), rgba(255,255,255,.09));
+      box-shadow: 0 12px 32px rgba(0,0,0,.18);
+      color: light-dark(#1b1b1b, #ffffff);
+      font-size: 13px; padding: 14px 16px 12px; box-sizing: border-box;
+      transform-origin: 100% 100%;
+    }
+    .ec-fly.dark { color-scheme: dark; }
+    .ec-fly {
+      --f-bg: light-dark(#fafafc, #272727);
+      --f-card: light-dark(#ffffff, #333333);
+      --f-card-2: light-dark(#ededf0, #3a3a3a);
+      --f-text: light-dark(#1b1b1b, #ffffff);
+      --f-text-2: light-dark(#6a6a6f, #c6c6cb);
+      --f-stroke: light-dark(rgba(0,0,0,.08), rgba(255,255,255,.09));
+      --f-track: light-dark(rgba(0,0,0,.12), rgba(255,255,255,.16));
+      --f-press: light-dark(rgba(0,0,0,.06), rgba(255,255,255,.08));
+    }
+    .ec-fly.is-muted .ec-vol { --sl-fill: light-dark(#9a9aa0, #7f7f86); }
+    .ec-fly.is-off .ec-fly-body { opacity: .45; pointer-events: none; user-select: none; }
+    @keyframes ec-pop { from { transform: scale(.96) translateY(8px); opacity: 0; } }
+    .ec-fly.ec-anim { animation: ec-pop .16s ease-out; }
+    @media (prefers-reduced-motion: reduce) { .ec-fly.ec-anim { animation: none; } }
+
+    .ec-head { display: flex; align-items: center; gap: 9px; }
+    .ec-logo { width: 26px; height: 26px; border-radius: 7px; flex: none; box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+    .ec-title { font-weight: 600; font-size: 13.5px; letter-spacing: .1px; }
+    .ec-pill {
+      margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; padding: 3px 9px; border-radius: 999px;
+      background: color-mix(in srgb, var(--ec-green) 14%, transparent);
+      color: light-dark(#1a7f37, #6ccb7b);
+    }
+    .ec-pill .ec-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ec-green); }
+    .ec-fly.is-off .ec-pill { background: var(--f-card-2); color: var(--f-text-2); }
+    .ec-fly.is-off .ec-pill .ec-dot { background: var(--ec-gray); }
+    .ec-pill .ec-pill-off { display: none; }
+    .ec-fly.is-off .ec-pill .ec-pill-on { display: none; }
+    .ec-fly.is-off .ec-pill .ec-pill-off { display: inline; }
+    .ec-sub { font-size: 11px; color: var(--f-text-2); margin: 5px 0 0 35px; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 5px; }
+    .ec-sub .ec-ic svg { width: 13px; height: 13px; }
+    .ec-tag.is-dim { opacity: .55; }
+    .ec-banner {
+      display: none; align-items: center; gap: 8px; margin-top: 10px;
+      padding: 8px 10px; border-radius: 6px; font-size: 12px;
+      background: var(--f-card-2); color: var(--f-text-2);
+    }
+    .ec-fly.is-off .ec-banner { display: flex; }
+    .ec-fly-body { margin-top: 10px; }
+
+    .ec-sec { padding: 10px 0; border-top: 1px solid var(--f-stroke); }
+    .ec-sec:first-child { border-top: 0; padding-top: 2px; }
+    .ec-row { display: flex; align-items: center; gap: 10px; }
+    .ec-lab { font-size: 12px; color: var(--f-text-2); }
+    .ec-chips2 { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ec-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11.5px; padding: 4px 10px; border-radius: 999px;
+      background: var(--f-card-2); color: var(--f-text);
+    }
+    .ec-tag .ec-ic svg { width: 13px; height: 13px; }
+    .ec-tag b { font-weight: 600; }
+    .ec-hires { color: light-dark(#8a5a17, #d9a44a); }
+
+    .ec-vol { flex: 1; }
+    .ec-val { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--f-text-2); min-width: 52px; text-align: right; }
+    .ec-iconbtn {
+      width: 30px; height: 30px; flex: none; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 6px; border: 0; background: transparent; color: var(--f-text); cursor: pointer;
+    }
+    .ec-iconbtn:hover { background: var(--f-press); }
+    .ec-iconbtn[aria-pressed="true"] { background: color-mix(in srgb, var(--ec-accent) 16%, transparent); color: var(--ec-accent); }
+    .ec-ic svg { width: 16px; height: 16px; display: block; }
+
+    .ec-seg { display: inline-flex; gap: 3px; padding: 3px; border-radius: 8px; background: var(--f-card-2); width: 100%; box-sizing: border-box; }
+    .ec-seg button {
+      flex: 1; border: 0; background: transparent; color: var(--f-text-2);
+      font: inherit; font-size: 12px; padding: 6px 0; border-radius: 6px; cursor: pointer;
+    }
+    .ec-seg button:hover { color: var(--f-text); }
+    .ec-seg button.is-active {
+      background: var(--f-card); color: var(--f-text); font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,.14), 0 0 0 1px var(--f-stroke);
+    }
+    .ec-seg.mini button { padding: 4px 0; font-size: 11px; }
+
+    .ec-fold-head {
+      width: 100%; display: flex; align-items: center; gap: 8px;
+      border: 0; background: transparent; color: var(--f-text);
+      font: inherit; font-size: 12.5px; font-weight: 600; padding: 2px 0; cursor: pointer; text-align: left;
+    }
+    .ec-fold-meta { font-weight: 400; font-size: 11px; color: var(--f-text-2); margin-left: auto; }
+    .ec-fold-head .ec-chev svg { width: 15px; height: 15px; transition: transform .15s ease; color: var(--f-text-2); }
+    .ec-fold.is-open .ec-fold-head .ec-chev svg { transform: rotate(180deg); }
+    .ec-fold-body { display: none; padding-top: 12px; animation: ec-fadein .12s ease-out; }
+    .ec-fold.is-open .ec-fold-body { display: block; }
+    @keyframes ec-fadein { from { opacity: 0; } }
+
+    .ec-bands { display: flex; gap: 3px; justify-content: space-between; margin-top: 2px; }
+    .ec-band { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 32px; }
+    .ec-band output { font-size: 10.5px; color: var(--f-text-2); font-variant-numeric: tabular-nums; min-height: 13px; }
+    .ec-band-freq { font-size: 10.5px; color: var(--f-text-2); }
+    .ec-band-track { position: relative; width: 26px; height: 118px; }
+    .ec-band-track input {
+      position: absolute; left: 50%; top: 50%; width: 118px; height: 26px;
+      transform: translate(-50%, -50%) rotate(-90deg);
+    }
+    .ec-ac-grid { display: grid; grid-template-columns: auto 1fr; gap: 9px 12px; align-items: center; margin-top: 10px; }
+    .ec-ac-grid .ec-lab { white-space: nowrap; }
+    .ec-ghost {
+      border: 0; background: transparent; color: var(--f-text-2); font: inherit; font-size: 11px;
+      display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 3px 7px; border-radius: 5px;
+    }
+    .ec-ghost:hover { background: var(--f-press); color: var(--f-text); }
+    .ec-ghost .ec-ic svg { width: 13px; height: 13px; }
+
+    .ec-switch { position: relative; width: 40px; height: 20px; flex: none; }
+    .ec-switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+    .ec-switch span {
+      position: absolute; inset: 0; border-radius: 999px; background: var(--f-track);
+      transition: background .15s ease; box-shadow: inset 0 0 0 1px var(--f-stroke);
+    }
+    .ec-switch span::after {
+      content: ""; position: absolute; top: 4px; left: 4px; width: 12px; height: 12px; border-radius: 50%;
+      background: light-dark(#6a6a6f, #cfcfcf); transition: transform .15s ease, background .15s ease;
+    }
+    .ec-switch input:checked + span { background: var(--ec-accent); }
+    .ec-switch input:checked + span::after { transform: translateX(20px); background: #fff; }
+    .ec-switch input:focus-visible + span { outline: 2px solid var(--ec-accent); outline-offset: 2px; }
+
+    .ec-badge-m2 {
+      font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 999px;
+      background: color-mix(in srgb, var(--ec-amber) 18%, transparent); color: light-dark(#8a6410, #e5c069);
+    }
+
+    /* ============ 托盘图标 ============ */
+    .ec-tiles { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .ec-tile {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 10px 12px 8px; border-radius: 10px; border: 1px solid transparent; min-width: 76px;
+    }
+    .ec-tile.is-active { border-color: var(--ec-accent); background: color-mix(in srgb, var(--ec-accent) 8%, transparent); }
+    .ec-tile span { font-size: 11px; color: var(--muted-foreground); }
+    .ec-strip {
+      border-radius: 8px; padding: 0 12px; height: 44px; display: flex; align-items: center; gap: 14px;
+      width: 320px; box-sizing: border-box; justify-content: flex-end;
+    }
+    .ec-strip.dark { background: #1f1f1f; color: #ffffff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+    .ec-strip.light { background: #f3f3f3; color: #1b1b1b; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+    .ec-strip .ec-dim { opacity: .55; }
+    .ec-strip .ec-clock { font-size: 11.5px; font-variant-numeric: tabular-nums; }
+    .ec-strip .ec-me {
+      display: inline-flex; padding: 4px; border-radius: 6px; position: relative;
+    }
+    .ec-strip .ec-ic svg { width: 15px; height: 15px; }
+    .ec-strip .ec-me:hover { background: rgba(128,128,128,.25); }
+
+    /* ============ 右键菜单 ============ */
+    .ec-menu {
+      width: 228px; border-radius: 8px; padding: 5px;
+      background: light-dark(#ffffff, #2b2b2b);
+      border: 1px solid light-dark(rgba(0,0,0,.09), rgba(255,255,255,.1));
+      box-shadow: 0 10px 28px rgba(0,0,0,.2); font-size: 12.5px; color: light-dark(#1b1b1b, #ffffff);
+      color-scheme: light;
+    }
+    .ec-menu.dark { color-scheme: dark; }
+    .ec-menu .ec-mi {
+      display: flex; align-items: center; gap: 10px; padding: 7px 9px; border-radius: 5px;
+    }
+    .ec-menu .ec-mi:hover { background: light-dark(rgba(0,0,0,.055), rgba(255,255,255,.07)); }
+    .ec-menu .ec-mi .ec-ic svg { width: 15px; height: 15px; color: light-dark(#55555a, #b9b9bf); }
+    .ec-menu hr { border: 0; border-top: 1px solid light-dark(rgba(0,0,0,.08), rgba(255,255,255,.09)); margin: 4px 8px; }
+    .ec-menu .ec-mk { margin-left: auto; width: 14px; height: 14px; color: var(--ec-accent); }
+
+    /* ============ 演示控制 & 规格表 ============ */
+    .ec-demo-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 12px; }
+    .ec-demo-bar .ec-seg {
+      width: auto; background: light-dark(#ececf0, #2e2e33);
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+    .ec-demo-bar .ec-seg button { padding: 5px 16px; flex: none; color: var(--muted-foreground); }
+    .ec-demo-bar .ec-seg button.is-active {
+      background: light-dark(#ffffff, #3a3a3a); color: var(--foreground);
+      box-shadow: 0 1px 3px rgba(0,0,0,.14), 0 0 0 1px var(--border);
+    }
+    .ec-btn {
+      display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border);
+      background: transparent; color: var(--foreground); font: inherit; font-size: 12px;
+      padding: 5px 12px; border-radius: 6px; cursor: pointer;
+    }
+    .ec-btn:hover { background: var(--muted); }
+    .ec-btn .ec-ic svg { width: 14px; height: 14px; }
+    .ec-spec { display: grid; grid-template-columns: minmax(120px, 180px) 1fr; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .ec-spec > div { padding: 9px 13px; border-top: 1px solid var(--border); font-size: 12.5px; }
+    .ec-spec > div:nth-child(odd) { border-left: 0; color: var(--muted-foreground); background: var(--muted); }
+    .ec-spec > div:nth-child(even) { color: var(--foreground); }
+    .ec-spec > div:nth-child(1), .ec-spec > div:nth-child(2) { border-top: 0; }
+    .ec-ok { color: var(--green); font-weight: 600; }
+    .ec-no { color: var(--muted-foreground); }
+    @media (max-width: 560px) { .ec-spec { grid-template-columns: 1fr; } .ec-spec > div:nth-child(odd) { border-left: 0; } }
+  </style>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="ecg-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#373c44"/><stop offset="1" stop-color="#141619"/>
+      </linearGradient>
+      <linearGradient id="ecg-sheen" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".16"/><stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="ecg-cone" cx=".38" cy=".32" r="1">
+        <stop offset="0" stop-color="#eda76e"/><stop offset=".55" stop-color="#c07a45"/><stop offset="1" stop-color="#7e4820"/>
+      </radialGradient>
+      <g id="ec-appicon-art">
+        <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#ecg-bg)"/>
+        <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#ecg-sheen)"/>
+        <rect x="18" y="18" width="220" height="220" rx="54" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+        <circle cx="128" cy="94" r="27" fill="url(#ecg-cone)"/>
+        <circle cx="128" cy="94" r="27" fill="none" stroke="#191b1f" stroke-width="7"/>
+        <circle cx="128" cy="94" r="9" fill="#1b1d21"/>
+        <circle cx="128" cy="94" r="3.4" fill="#c07a45"/>
+        <circle cx="128" cy="168" r="53" fill="url(#ecg-cone)"/>
+        <circle cx="128" cy="168" r="53" fill="none" stroke="#191b1f" stroke-width="9"/>
+        <circle cx="128" cy="168" r="36" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="3"/>
+        <circle cx="128" cy="168" r="17" fill="#1b1d21"/>
+        <circle cx="128" cy="168" r="6" fill="#c07a45"/>
+      </g>
+      <g id="ec-appicon-mini">
+        <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#ecg-bg)"/>
+        <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#ecg-sheen)"/>
+        <circle cx="128" cy="128" r="62" fill="url(#ecg-cone)"/>
+        <circle cx="128" cy="128" r="62" fill="none" stroke="#191b1f" stroke-width="11"/>
+        <circle cx="128" cy="128" r="20" fill="#1b1d21"/>
+      </g>
+      <linearGradient id="ecg-traybg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3d434c"/><stop offset="1" stop-color="#1b1e23"/>
+      </linearGradient>
+      <g id="ec-tray-base">
+        <rect x="1" y="1" width="14" height="14" rx="4.2" fill="url(#ecg-traybg)"/>
+        <rect x="1" y="1" width="14" height="14" rx="4.2" fill="url(#ecg-sheen)"/>
+        <circle cx="8" cy="7.7" r="3.5" fill="url(#ecg-cone)"/>
+        <circle cx="8" cy="7.7" r="3.5" fill="none" stroke="#15171b" stroke-width="1.1"/>
+        <circle cx="8" cy="7.7" r="1.25" fill="#15171b"/>
+      </g>
+      <g id="ec-tray-muted">
+        <use href="#ec-tray-base"></use>
+        <path d="M3.6 12.4L12.4 3.6" fill="none" stroke="#ff6259" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+    </defs>
+  </svg>
+
+  <h2>Edifier Center — UI 设计方案</h2>
+  <div class="ec-meta">
+    <span class="ec-chip">版本 <b>v1.0</b></span>
+    <span class="ec-chip">映射 <b>WPF-UI（Fluent）/ .NET 10</b></span>
+    <span class="ec-chip">主色 <b>铜 #C07A45</b>（MR5 铜膜单元）</span>
+    <span class="ec-chip">字体 <b>Segoe UI Variable</b></span>
+    <span class="ec-chip">状态绿 <b>#3FB950</b></span>
+  </div>
+
+  <h3 class="ec-h"><span>01</span>应用图标</h3>
+  <div class="viz-dotted-background ec-stage">
+    <svg viewBox="0 0 256 256" width="120" height="120" role="img" aria-label="Edifier Center 应用图标">
+      <use href="#ec-appicon-art"></use>
+    </svg>
+    <div class="ec-tiles" style="align-content:center">
+      <svg viewBox="0 0 256 256" width="64" height="64" aria-hidden="true"><use href="#ec-appicon-art"></use></svg>
+      <svg viewBox="0 0 256 256" width="48" height="48" aria-hidden="true"><use href="#ec-appicon-art"></use></svg>
+      <svg viewBox="0 0 256 256" width="32" height="32" aria-hidden="true"><use href="#ec-appicon-art"></use></svg>
+      <svg viewBox="0 0 256 256" width="24" height="24" aria-hidden="true"><use href="#ec-appicon-mini"></use></svg>
+      <svg viewBox="0 0 256 256" width="16" height="16" aria-hidden="true"><use href="#ec-appicon-mini"></use></svg>
+    </div>
+  </div>
+  <p class="ec-cap">设计语汇：高音/中低音双铜膜单元 + 深色机身，呼应 MR5BT 实物。交付为多尺寸 <code>.ico</code>（256/64/48/32/24/16）；≤24px 使用简化剪影保证小尺寸可辨识。</p>
+
+  <h3 class="ec-h"><span>02</span>任务栏托盘图标（4 状态）</h3>
+  <div class="viz-dotted-background ec-stage">
+    <div class="ec-tiles">
+      <div class="ec-tile is-active" data-ec-tile="connected">
+        <svg viewBox="0 0 16 16" width="32" height="32" aria-hidden="true">
+          <use href="#ec-tray-base"></use><circle cx="12.6" cy="12.6" r="2.3" fill="#3fb950"></circle>
+        </svg><span>已连接</span>
+      </div>
+      <div class="ec-tile" data-ec-tile="muted">
+        <svg viewBox="0 0 16 16" width="32" height="32" aria-hidden="true">
+          <use href="#ec-tray-muted"></use><circle cx="12.6" cy="12.6" r="2.3" fill="#3fb950"></circle>
+        </svg><span>静音</span>
+      </div>
+      <div class="ec-tile" data-ec-tile="off">
+        <svg viewBox="0 0 16 16" width="32" height="32" aria-hidden="true" style="opacity:.5">
+          <use href="#ec-tray-base"></use><circle cx="12.6" cy="12.6" r="2.3" fill="#9a9a9a"></circle>
+        </svg><span>已断开</span>
+      </div>
+      <div class="ec-tile" data-ec-tile="re">
+        <svg viewBox="0 0 16 16" width="32" height="32" aria-hidden="true" style="opacity:.8">
+          <use href="#ec-tray-base"></use><circle cx="12.6" cy="12.6" r="2.3" fill="#d7a013"></circle>
+        </svg><span>重连中</span>
+      </div>
+    </div>
+    <div class="ec-col">
+      <div class="ec-strip dark">
+        <span class="ec-ic ec-dim"><i data-lucide="chevron-up" aria-hidden="true"></i></span>
+        <span class="ec-ic ec-dim"><i data-lucide="wifi" aria-hidden="true"></i></span>
+        <span class="ec-ic ec-dim"><i data-lucide="battery-full" aria-hidden="true"></i></span>
+        <span class="ec-me" data-tooltip="EDIFIER MR5BT · 已连接 · 音量 22/30">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><use href="#ec-tray-base"></use><circle cx="12.6" cy="12.6" r="2.2" fill="#3fb950" stroke="#1f1f1f" stroke-width=".8"></circle></svg>
+        </span>
+        <span class="ec-clock ec-dim">20:45</span>
+      </div>
+      <div class="ec-strip light">
+        <span class="ec-ic ec-dim"><i data-lucide="chevron-up" aria-hidden="true"></i></span>
+        <span class="ec-ic ec-dim"><i data-lucide="wifi" aria-hidden="true"></i></span>
+        <span class="ec-ic ec-dim"><i data-lucide="battery-full" aria-hidden="true"></i></span>
+        <span class="ec-me" data-tooltip="EDIFIER MR5BT · 已连接 · 音量 22/30">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><use href="#ec-tray-base"></use><circle cx="12.6" cy="12.6" r="2.2" fill="#2ea043" stroke="#f3f3f3" stroke-width=".8"></circle></svg>
+        </span>
+        <span class="ec-clock ec-dim">20:45</span>
+      </div>
+    </div>
+  </div>
+  <p class="ec-cap">托盘图标 = <b>应用图标微缩版</b> + 右下角状态点（绿＝已连接 / 灰＝已断开 / 琥珀＝重连中），静音在图标上叠加红色斜杠——与系统音量的白色扬声器线稿明显区分，不会混淆。图标自带深色底，在亮/暗任务栏上都清晰。交付 <code>.ico</code>：4 状态 × 16/20/24/32/48。</p>
+
+  <h3 class="ec-h"><span>03</span>任务栏弹窗（核心界面，宽 360）</h3>
+  <div class="ec-demo-bar">
+    <div class="ec-seg" role="group" aria-label="连接状态预览">
+      <button type="button" class="is-active" data-ec-state="on" aria-pressed="true">已连接</button>
+      <button type="button" data-ec-state="off" aria-pressed="false">已断开</button>
+    </div>
+    <button type="button" class="ec-btn" id="ec-replay"><span class="ec-ic"><i data-lucide="play" aria-hidden="true"></i></span>预览打开动画</button>
+    <span class="ec-cap" style="margin:0">暗色面板为可交互演示：音量 / 静音 / 模式 / EQ / 折叠均可操作</span>
+  </div>
+  <div class="viz-dotted-background ec-stage" style="align-items:stretch">
+    <section class="ec-fly" aria-label="弹窗亮色预览">
+      <div class="ec-head">
+        <svg class="ec-logo" viewBox="0 0 256 256" aria-hidden="true"><use href="#ec-appicon-art"></use></svg>
+        <span class="ec-title">EDIFIER MR5BT</span>
+        <span class="ec-pill"><span class="ec-dot"></span><span class="ec-pill-on">已连接</span><span class="ec-pill-off">未连接</span></span>
+      </div>
+      <div class="ec-sub"><span class="ec-ic"><i data-lucide="signal-medium" aria-hidden="true"></i></span>信号良好（−52 dBm）· 固件 1.0.3</div>
+      <div class="ec-banner"><span class="ec-ic"><i data-lucide="refresh-cw" aria-hidden="true"></i></span>音箱未连接 · 自动重连中…</div>
+      <div class="ec-fly-body">
+        <div class="ec-sec">
+          <div class="ec-chips2">
+            <span class="ec-tag"><span class="ec-ic"><i data-lucide="cable" aria-hidden="true"></i></span>输入源 <b>XLR</b></span>
+            <span class="ec-tag ec-decode" data-tooltip="由音箱解码状态（0x68）实时驱动：05=有线 Hi-Res / 04=无线 Hi-Res / 00=标准 / 未知=不显示，不作为静态能力角标"><span class="ec-ic"><i data-lucide="audio-lines" aria-hidden="true"></i></span>解码 <b class="ec-decode-val">Hi-Res 有线</b></span>
+          </div>
+        </div>
+        <div class="ec-sec">
+          <div class="ec-row" style="margin-bottom:6px">
+            <span class="ec-lab">音量</span><span class="ec-val ec-vol-out">22 / 30</span>
+          </div>
+          <div class="ec-row">
+            <button type="button" class="ec-iconbtn ec-mute" aria-pressed="false" aria-label="静音">
+              <span class="ec-ic ec-i-on"><i data-lucide="volume-2" aria-hidden="true"></i></span>
+              <span class="ec-ic ec-i-off" style="display:none"><i data-lucide="volume-x" aria-hidden="true"></i></span>
+            </button>
+            <input type="range" class="ec-vol" min="0" max="30" step="1" value="22" aria-label="音量">
+          </div>
+        </div>
+        <div class="ec-sec">
+          <div class="ec-lab" style="margin-bottom:6px">声音模式</div>
+          <div class="ec-seg" data-ec-seg aria-label="声音模式">
+            <button type="button" aria-pressed="false">监听</button>
+            <button type="button" aria-pressed="true" class="is-active">音乐</button>
+            <button type="button" aria-pressed="false">自定义</button>
+          </div>
+        </div>
+        <div class="ec-sec ec-fold is-open">
+          <button type="button" class="ec-fold-head" aria-expanded="true">
+            自定义 EQ<span class="ec-fold-meta">9 段 · 基准 音乐</span><span class="ec-ic ec-chev"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+          <div class="ec-fold-body">
+            <div class="ec-bands">
+              <div class="ec-band"><output data-outid="b0">1dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1" data-out="b0" data-unit="dB" aria-label="62Hz 增益"></div><span class="ec-band-freq">62</span></div>
+              <div class="ec-band"><output data-outid="b1">1.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1.5" data-out="b1" data-unit="dB" aria-label="125Hz 增益"></div><span class="ec-band-freq">125</span></div>
+              <div class="ec-band"><output data-outid="b2">2dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="2" data-out="b2" data-unit="dB" aria-label="250Hz 增益"></div><span class="ec-band-freq">250</span></div>
+              <div class="ec-band"><output data-outid="b3">0dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="0" data-out="b3" data-unit="dB" aria-label="500Hz 增益"></div><span class="ec-band-freq">500</span></div>
+              <div class="ec-band"><output data-outid="b4">-0.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="-0.5" data-out="b4" data-unit="dB" aria-label="1kHz 增益"></div><span class="ec-band-freq">1k</span></div>
+              <div class="ec-band"><output data-outid="b5">2dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="2" data-out="b5" data-unit="dB" aria-label="2kHz 增益"></div><span class="ec-band-freq">2k</span></div>
+              <div class="ec-band"><output data-outid="b6">1.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1.5" data-out="b6" data-unit="dB" aria-label="4kHz 增益"></div><span class="ec-band-freq">4k</span></div>
+              <div class="ec-band"><output data-outid="b7">1dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1" data-out="b7" data-unit="dB" aria-label="8kHz 增益"></div><span class="ec-band-freq">8k</span></div>
+              <div class="ec-band"><output data-outid="b8">0.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="0.5" data-out="b8" data-unit="dB" aria-label="16kHz 增益"></div><span class="ec-band-freq">16k</span></div>
+            </div>
+            <p class="ec-cap" style="margin:10px 0 0">单位 Hz · 步进 0.5dB · 范围 ±6dB（码表以 Phase 0 校准为准）</p>
+          </div>
+        </div>
+        <div class="ec-sec ec-fold is-open">
+          <button type="button" class="ec-fold-head" aria-expanded="true">
+            声学调校<span class="ec-badge-m2">M2</span><span class="ec-ic ec-chev" style="margin-left:auto"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+          <div class="ec-fold-body">
+            <div class="ec-row" style="margin-bottom:6px">
+              <span class="ec-lab">低频切除</span><span class="ec-val"><output data-outid="acf">40Hz</output></span>
+            </div>
+            <input type="range" min="20" max="100" step="5" value="40" data-out="acf" data-unit="Hz" style="width:100%" aria-label="低频切除频率">
+            <div class="ec-ac-grid">
+              <span class="ec-lab">滚降斜率（dB/Oct）</span>
+              <div class="ec-seg mini" data-ec-seg aria-label="滚降斜率">
+                <button type="button" aria-pressed="false">-6</button>
+                <button type="button" class="is-active" aria-pressed="true">-12</button>
+                <button type="button" aria-pressed="false">-18</button>
+                <button type="button" aria-pressed="false">-24</button>
+              </div>
+              <span class="ec-lab">空间声学（dB）</span>
+              <div class="ec-seg mini" data-ec-seg aria-label="空间声学">
+                <button type="button" aria-pressed="false">0</button>
+                <button type="button" aria-pressed="false">-1</button>
+                <button type="button" aria-pressed="false">-2</button>
+                <button type="button" aria-pressed="false">-3</button>
+                <button type="button" class="is-active" aria-pressed="true">-4</button>
+              </div>
+              <span class="ec-lab">桌面反射控制</span>
+              <span class="ec-row" style="gap:8px">
+                <label class="ec-switch"><input type="checkbox" checked aria-label="桌面反射控制"><span></span></label>
+                <button type="button" class="ec-ghost"><span class="ec-ic"><i data-lucide="rotate-ccw" aria-hidden="true"></i></span>恢复默认</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ec-fly dark" id="ec-fly-dark" aria-label="弹窗暗色预览（可交互）">
+      <div class="ec-head">
+        <svg class="ec-logo" viewBox="0 0 256 256" aria-hidden="true"><use href="#ec-appicon-art"></use></svg>
+        <span class="ec-title">EDIFIER MR5BT</span>
+        <span class="ec-pill"><span class="ec-dot"></span><span class="ec-pill-on">已连接</span><span class="ec-pill-off">未连接</span></span>
+      </div>
+      <div class="ec-sub"><span class="ec-ic"><i data-lucide="signal-medium" aria-hidden="true"></i></span>信号良好（−52 dBm）· 固件 1.0.3</div>
+      <div class="ec-banner"><span class="ec-ic"><i data-lucide="refresh-cw" aria-hidden="true"></i></span>音箱未连接 · 自动重连中…</div>
+      <div class="ec-fly-body">
+        <div class="ec-sec">
+          <div class="ec-chips2">
+            <span class="ec-tag"><span class="ec-ic"><i data-lucide="cable" aria-hidden="true"></i></span>输入源 <b>XLR</b></span>
+            <span class="ec-tag ec-decode" data-tooltip="由音箱解码状态（0x68）实时驱动：05=有线 Hi-Res / 04=无线 Hi-Res / 00=标准 / 未知=不显示，不作为静态能力角标"><span class="ec-ic"><i data-lucide="audio-lines" aria-hidden="true"></i></span>解码 <b class="ec-decode-val">Hi-Res 有线</b></span>
+          </div>
+        </div>
+        <div class="ec-sec">
+          <div class="ec-row" style="margin-bottom:6px">
+            <span class="ec-lab">音量</span><span class="ec-val ec-vol-out">22 / 30</span>
+          </div>
+          <div class="ec-row">
+            <button type="button" class="ec-iconbtn ec-mute" aria-pressed="false" aria-label="静音">
+              <span class="ec-ic ec-i-on"><i data-lucide="volume-2" aria-hidden="true"></i></span>
+              <span class="ec-ic ec-i-off" style="display:none"><i data-lucide="volume-x" aria-hidden="true"></i></span>
+            </button>
+            <input type="range" class="ec-vol" min="0" max="30" step="1" value="22" aria-label="音量">
+          </div>
+        </div>
+        <div class="ec-sec">
+          <div class="ec-lab" style="margin-bottom:6px">声音模式</div>
+          <div class="ec-seg" data-ec-seg aria-label="声音模式">
+            <button type="button" aria-pressed="false">监听</button>
+            <button type="button" aria-pressed="true" class="is-active">音乐</button>
+            <button type="button" aria-pressed="false">自定义</button>
+          </div>
+        </div>
+        <div class="ec-sec ec-fold is-open">
+          <button type="button" class="ec-fold-head" aria-expanded="true">
+            自定义 EQ<span class="ec-fold-meta">9 段 · 基准 音乐</span><span class="ec-ic ec-chev"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+          <div class="ec-fold-body">
+            <div class="ec-bands">
+              <div class="ec-band"><output data-outid="c0">1dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1" data-out="c0" data-unit="dB" aria-label="62Hz 增益"></div><span class="ec-band-freq">62</span></div>
+              <div class="ec-band"><output data-outid="c1">1.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1.5" data-out="c1" data-unit="dB" aria-label="125Hz 增益"></div><span class="ec-band-freq">125</span></div>
+              <div class="ec-band"><output data-outid="c2">2dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="2" data-out="c2" data-unit="dB" aria-label="250Hz 增益"></div><span class="ec-band-freq">250</span></div>
+              <div class="ec-band"><output data-outid="c3">0dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="0" data-out="c3" data-unit="dB" aria-label="500Hz 增益"></div><span class="ec-band-freq">500</span></div>
+              <div class="ec-band"><output data-outid="c4">-0.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="-0.5" data-out="c4" data-unit="dB" aria-label="1kHz 增益"></div><span class="ec-band-freq">1k</span></div>
+              <div class="ec-band"><output data-outid="c5">2dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="2" data-out="c5" data-unit="dB" aria-label="2kHz 增益"></div><span class="ec-band-freq">2k</span></div>
+              <div class="ec-band"><output data-outid="c6">1.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1.5" data-out="c6" data-unit="dB" aria-label="4kHz 增益"></div><span class="ec-band-freq">4k</span></div>
+              <div class="ec-band"><output data-outid="c7">1dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="1" data-out="c7" data-unit="dB" aria-label="8kHz 增益"></div><span class="ec-band-freq">8k</span></div>
+              <div class="ec-band"><output data-outid="c8">0.5dB</output><div class="ec-band-track"><input type="range" min="-6" max="6" step="0.5" value="0.5" data-out="c8" data-unit="dB" aria-label="16kHz 增益"></div><span class="ec-band-freq">16k</span></div>
+            </div>
+            <p class="ec-cap" style="margin:10px 0 0">单位 Hz · 步进 0.5dB · 范围 ±6dB（码表以 Phase 0 校准为准）</p>
+          </div>
+        </div>
+        <div class="ec-sec ec-fold is-open">
+          <button type="button" class="ec-fold-head" aria-expanded="true">
+            声学调校<span class="ec-badge-m2">M2</span><span class="ec-ic ec-chev" style="margin-left:auto"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+          <div class="ec-fold-body">
+            <div class="ec-row" style="margin-bottom:6px">
+              <span class="ec-lab">低频切除</span><span class="ec-val"><output data-outid="dgf">40Hz</output></span>
+            </div>
+            <input type="range" min="20" max="100" step="5" value="40" data-out="dgf" data-unit="Hz" style="width:100%" aria-label="低频切除频率">
+            <div class="ec-ac-grid">
+              <span class="ec-lab">滚降斜率（dB/Oct）</span>
+              <div class="ec-seg mini" data-ec-seg aria-label="滚降斜率">
+                <button type="button" aria-pressed="false">-6</button>
+                <button type="button" class="is-active" aria-pressed="true">-12</button>
+                <button type="button" aria-pressed="false">-18</button>
+                <button type="button" aria-pressed="false">-24</button>
+              </div>
+              <span class="ec-lab">空间声学（dB）</span>
+              <div class="ec-seg mini" data-ec-seg aria-label="空间声学">
+                <button type="button" aria-pressed="false">0</button>
+                <button type="button" aria-pressed="false">-1</button>
+                <button type="button" aria-pressed="false">-2</button>
+                <button type="button" aria-pressed="false">-3</button>
+                <button type="button" class="is-active" aria-pressed="true">-4</button>
+              </div>
+              <span class="ec-lab">桌面反射控制</span>
+              <span class="ec-row" style="gap:8px">
+                <label class="ec-switch"><input type="checkbox" checked aria-label="桌面反射控制"><span></span></label>
+                <button type="button" class="ec-ghost"><span class="ec-ic"><i data-lucide="rotate-ccw" aria-hidden="true"></i></span>恢复默认</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <p class="ec-cap">布局与官方 App 对齐（§2.2.5）：输入源为只读徽章；<b>解码徽章</b>由音箱 0x68 状态实时驱动（05=有线 Hi-Res / 04=无线 Hi-Res / 00=标准，未知时不显示），断开时显示"—"；声音模式 = <code>0xD5/0xC4</code>；自定义 EQ = <code>0x43/0x44</code>（懒加载）；声学调校 = <code>0xC4</code> 尾部 7 字节（M2，此为展开视图）。<b>信号行</b>：RSSI 换算为档位显示（≥−55 优秀 / −55~−70 良好 / −70~−80 一般 / &lt;−80 弱），括号内保留 dBm 原始值。断开态：横幅提示 + 全部控件禁用，托盘同步切换状态。</p>
+
+  <h3 class="ec-h"><span>04</span>托盘右键菜单</h3>
+  <div class="viz-dotted-background ec-stage">
+    <div class="ec-menu dark" role="menu" aria-label="托盘右键菜单（暗色）">
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="volume-x" aria-hidden="true"></i></span>静音</div>
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="refresh-cw" aria-hidden="true"></i></span>立即重连</div>
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="app-window" aria-hidden="true"></i></span>开机自启<span class="ec-ic ec-mk"><i data-lucide="check" aria-hidden="true"></i></span></div>
+      <hr>
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="log-out" aria-hidden="true"></i></span>退出</div>
+    </div>
+    <div class="ec-menu" role="menu" aria-label="托盘右键菜单（亮色）">
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="volume-x" aria-hidden="true"></i></span>静音</div>
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="refresh-cw" aria-hidden="true"></i></span>立即重连</div>
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="app-window" aria-hidden="true"></i></span>开机自启<span class="ec-ic ec-mk"><i data-lucide="check" aria-hidden="true"></i></span></div>
+      <hr>
+      <div class="ec-mi"><span class="ec-ic"><i data-lucide="log-out" aria-hidden="true"></i></span>退出</div>
+    </div>
+  </div>
+  <p class="ec-cap">使用原生 Win32 上下文菜单风格（H.NotifyIcon 生成），菜单项与 §5.4 交互规格一致：静音切换 / 重连 / 自启勾选 / 退出。</p>
+
+  <h3 class="ec-h"><span>05</span>动效与交互规格</h3>
+  <div class="ec-meta">
+    <span class="ec-chip">打开动画 <b>150ms · scale .96→1 + 淡入 · 原点右下</b></span>
+    <span class="ec-chip">滑条 <b>拖动 150ms 节流合并下发</b></span>
+    <span class="ec-chip">状态 <b>通知推送驱动，无轮询刷新</b></span>
+    <span class="ec-chip">折叠 <b>瞬时展开 + 120ms 淡入，无高度动画</b></span>
+    <span class="ec-chip">系统 <b>跟随亮暗主题 · 尊重"减少动态效果"</b></span>
+    <span class="ec-chip">徽章 <b>解码状态由 0x68 实时驱动，非静态角标</b></span>
+  </div>
+
+  <h3 class="ec-h"><span>06</span>渲染性能预算（→ WPF 实现映射）</h3>
+  <div class="ec-spec">
+    <div>面板背景</div><div>系统 Mica/DWM backdrop（WPF-UI 应用级），不自绘模糊层；本页背景为近似模拟</div>
+    <div>飞出面板</div><div>窗口常驻 Hide()/Show()，二次打开 &lt;50ms；EQ/声学调校内容懒加载</div>
+    <div>滑条</div><div>WPF-UI Slider 原生控件；拖动命令 150ms 合并（DispatcherTimer）后入命令队列</div>
+    <div>动画</div><div>仅 transform/opacity 合成动画；不动画布局属性；遵循系统减少动态效果</div>
+    <div>托盘图标</div><div>预生成多尺寸 .ico（4 状态 × 16–48），仅状态变更时更换，无逐帧重绘</div>
+    <div>RSSI</div><div>被动扫描（Passive），仅连接期间开启，更新 ≤1Hz</div>
+    <div>状态同步</div><div>BLE 通知推送为主，≥5s 轻量轮询仅保活对账；UI 绑定 SpeakerState 变更事件</div>
+    <div>主题</div><div>跟随系统亮暗即时切换（WPF-UI ThemeWatcher），令牌集中管理</div>
+    <div>整体</div><div>单实例；空闲内存目标 ≤60MB；自包含单文件 exe，无后台服务、无管理员权限</div>
+  </div>
+
+  <h3 class="ec-h"><span>07</span>功能核对（对照 §1.1 需求定稿）</h3>
+  <div class="ec-meta">
+    <span class="ec-chip"><b class="ec-ok">✓</b> 输入源显示</span>
+    <span class="ec-chip"><b class="ec-ok">✓</b> 音量 + 静音</span>
+    <span class="ec-chip"><b class="ec-ok">✓</b> 声音模式</span>
+    <span class="ec-chip"><b class="ec-ok">✓</b> 9 段自定义 EQ</span>
+    <span class="ec-chip"><b class="ec-ok">✓</b> 声学调校 <b class="ec-badge-m2">M2</b></span>
+    <span class="ec-chip"><b class="ec-ok">✓</b> 固件版本 / RSSI 显示</span>
+    <span class="ec-chip"><b class="ec-ok">✓</b> 断线状态与自动重连</span>
+    <span class="ec-chip"><b class="ec-no">✗</b> 输入切换</span>
+    <span class="ec-chip"><b class="ec-no">✗</b> 固件更新 / OTA</span>
+    <span class="ec-chip"><b class="ec-no">✗</b> 关机 / 改名 / LED</span>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById("ec-design");
+      if (!root) return;
+
+      function setFill(input) {
+        var min = parseFloat(input.min) || 0, max = parseFloat(input.max) || 100;
+        var p = ((parseFloat(input.value) - min) / (max - min)) * 100;
+        input.style.setProperty("--p", p + "%");
+      }
+      function fmt(v, unit) {
+        if (unit === "dB") return ((v % 1 === 0) ? v.toFixed(0) : v.toFixed(1)) + "dB";
+        return v.toFixed(0) + (unit || "");
+      }
+      root.querySelectorAll("input[type=range]").forEach(setFill);
+
+      root.querySelectorAll(".ec-fly").forEach(function (f) {
+        var vol = f.querySelector(".ec-vol");
+        var volOut = f.querySelector(".ec-vol-out");
+        var muteBtn = f.querySelector(".ec-mute");
+        var muted = false;
+        function paintVol() {
+          volOut.textContent = muted ? "已静音" : vol.value + " / 30";
+          f.querySelector(".ec-i-on").style.display = muted ? "none" : "";
+          f.querySelector(".ec-i-off").style.display = muted ? "" : "none";
+        }
+        vol.addEventListener("input", function () { setFill(vol); paintVol(); });
+        muteBtn.addEventListener("click", function () {
+          muted = !muted;
+          f.classList.toggle("is-muted", muted);
+          muteBtn.setAttribute("aria-pressed", String(muted));
+          paintVol();
+        });
+        paintVol();
+
+        f.querySelectorAll("input[type=range][data-out]").forEach(function (r) {
+          var out = f.querySelector("[data-outid='" + r.getAttribute("data-out") + "']");
+          if (!out) return;
+          function paint() { out.textContent = fmt(parseFloat(r.value), r.getAttribute("data-unit")); }
+          r.addEventListener("input", function () { setFill(r); paint(); });
+          paint();
+        });
+
+        f.querySelectorAll("[data-ec-seg]").forEach(function (group) {
+          group.querySelectorAll("button").forEach(function (b) {
+            b.addEventListener("click", function () {
+              group.querySelectorAll("button").forEach(function (x) {
+                x.classList.remove("is-active"); x.setAttribute("aria-pressed", "false");
+              });
+              b.classList.add("is-active"); b.setAttribute("aria-pressed", "true");
+            });
+          });
+        });
+
+        f.querySelectorAll(".ec-fold").forEach(function (fold) {
+          var head = fold.querySelector(".ec-fold-head");
+          head.addEventListener("click", function () {
+            var open = fold.classList.toggle("is-open");
+            head.setAttribute("aria-expanded", String(open));
+          });
+        });
+      });
+
+      function setState(on) {
+        root.querySelectorAll(".ec-fly").forEach(function (f) {
+          f.classList.toggle("is-off", !on);
+          var dv = f.querySelector(".ec-decode-val");
+          if (dv) dv.textContent = on ? "Hi-Res 有线" : "—";
+          var chip = f.querySelector(".ec-decode");
+          if (chip) chip.classList.toggle("is-dim", !on);
+        });
+        root.querySelectorAll("[data-ec-state]").forEach(function (b) {
+          var active = (b.getAttribute("data-ec-state") === "on") === on;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-pressed", String(active));
+        });
+        root.querySelectorAll("[data-ec-tile]").forEach(function (t) {
+          t.classList.toggle("is-active", t.getAttribute("data-ec-tile") === (on ? "connected" : "off"));
+        });
+      }
+      root.querySelectorAll("[data-ec-state]").forEach(function (b) {
+        b.addEventListener("click", function () { setState(b.getAttribute("data-ec-state") === "on"); });
+      });
+
+      document.getElementById("ec-replay").addEventListener("click", function () {
+        root.querySelectorAll(".ec-fly").forEach(function (f) {
+          f.classList.remove("ec-anim"); void f.offsetWidth; f.classList.add("ec-anim");
+        });
+      });
+
+      if (globalThis.Tweak) {
+        var design = { accent: "#c07a45", radius: 8 };
+        var t = new Tweak({
+          container: document.getElementById("ec-fly-dark"),
+          onChange: function () {
+            root.style.setProperty("--ec-accent", design.accent);
+            root.style.setProperty("--ec-radius", design.radius + "px");
+          }
+        });
+        t.addColorPicker(design, "accent", { label: "强调色", reference: "--ec-accent" });
+        t.addSlider(design, "radius", { label: "面板圆角", min: 4, max: 16, unit: "px", reference: "--ec-radius" });
+      }
+    })();
+  </script>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.17.0/dist/umd/lucide.min.js"></script>
+<script>try { if (window.lucide) { lucide.createIcons({ attrs: { width: 16, height: 16 } }); } } catch (e) {}</script>
+</body>
+</html>

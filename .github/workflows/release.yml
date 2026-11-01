@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 解析版本号（去掉 tag 的 v 前缀）
+        id: version
+        shell: pwsh
+        run: 'echo "version=$($env:GITHUB_REF_NAME.TrimStart(''v''))" >> $env:GITHUB_OUTPUT'
+
+      - name: 测试
+        run: dotnet test tests/EdifierCenter.Core.Tests -c Release
+
+      - name: 发布单文件 exe（自包含）
+        run: >
+          dotnet publish src/EdifierCenter.App -c Release -r win-x64
+          -p:PublishSingleFile=true -p:SelfContained=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:Version=${{ steps.version.outputs.version }}
+          -o publish
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: EdifierCenter-${{ steps.version.outputs.version }}
+          path: publish/EdifierCenter.exe
+
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: publish/EdifierCenter.exe
+          generate_release_notes: true

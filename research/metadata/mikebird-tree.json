@@ -1,0 +1,116 @@
+{
+  "sha": "d3718b32dba9dde274278027a41cbfe326954ee3",
+  "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/trees/d3718b32dba9dde274278027a41cbfe326954ee3",
+  "tree": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3a15ef6f444b7d0d5f873525f126dec6eb3d3e6",
+      "size": 152,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/b3a15ef6f444b7d0d5f873525f126dec6eb3d3e6"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5446a904e49a869d62ffeeb095b75ce5a691b16d",
+      "size": 1066,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/5446a904e49a869d62ffeeb095b75ce5a691b16d"
+    },
+    {
+      "path": "PROTOCOL.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "51e64e0f78d2f0a0dd3a9d568bc429f64aee6963",
+      "size": 5990,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/51e64e0f78d2f0a0dd3a9d568bc429f64aee6963"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "37440e33e470a882ece81c59a29c650902911757",
+      "size": 15105,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/37440e33e470a882ece81c59a29c650902911757"
+    },
+    {
+      "path": "edifier",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "48a6aa53709016bcd18d9900ec66797725aee8ea",
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/trees/48a6aa53709016bcd18d9900ec66797725aee8ea"
+    },
+    {
+      "path": "edifier/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a94fd0b1e9b349cad818b329cb43f929418c7b01",
+      "size": 238,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/a94fd0b1e9b349cad818b329cb43f929418c7b01"
+    },
+    {
+      "path": "edifier/ble.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "544a5ee9faad01c6111e9aef5fff5fcc0426dfae",
+      "size": 12149,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/544a5ee9faad01c6111e9aef5fff5fcc0426dfae"
+    },
+    {
+      "path": "edifier/cli.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9cf6a719d17b601d51b4f5a01a8b2e59ac9ebd1f",
+      "size": 8164,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/9cf6a719d17b601d51b4f5a01a8b2e59ac9ebd1f"
+    },
+    {
+      "path": "edifier/protocol.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4fed1eecce65142d43a8a437d46b2ea5a274906c",
+      "size": 7884,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/4fed1eecce65142d43a8a437d46b2ea5a274906c"
+    },
+    {
+      "path": "requirements.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "af8eee2ff5074d27a8bda2dd25551979b9444320",
+      "size": 12,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/af8eee2ff5074d27a8bda2dd25551979b9444320"
+    },
+    {
+      "path": "tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "98c3acc8ef7b785564b0c169d97b405b5d48ed1a",
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/trees/98c3acc8ef7b785564b0c169d97b405b5d48ed1a"
+    },
+    {
+      "path": "tests/test_protocol.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fe1a0e45129beb81213a2d1044ccc46407836f58",
+      "size": 6380,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/fe1a0e45129beb81213a2d1044ccc46407836f58"
+    },
+    {
+      "path": "tools",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a3c642ae7cc3e44579d7b8f21aa714bd6cb7db20",
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/trees/a3c642ae7cc3e44579d7b8f21aa714bd6cb7db20"
+    },
+    {
+      "path": "tools/connected.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "23876becae574f07e5786000e1773612f5c8488a",
+      "size": 3314,
+      "url": "https://api.github.com/repos/MikeBirdTech/liberated-edifier-s880db-mkii/git/blobs/23876becae574f07e5786000e1773612f5c8488a"
+    }
+  ],
+  "truncated": false
+}
