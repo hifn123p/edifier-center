@@ -19,6 +19,7 @@ public sealed class CalibrationViewModel : BindBase
     private readonly StateStore _store;
     private readonly EdifierSession _session;
     private readonly Mr5Profile _profile;
+    private readonly Dispatcher _dispatcher;
     private readonly SettingsService _settings;
     private readonly List<Step> _steps;
     private readonly Dictionary<string, string> _inputLabels = [];
