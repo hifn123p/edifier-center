@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 using EdifierCenter.App.Services;
@@ -314,7 +315,8 @@ public sealed class MainViewModel : BindBase
     private void SendBandChange()
     {
         if (!IsConnected || _eqMirror is null) return;
-        var bands = _eqMirror.Bands
+        var previous = _eqMirror;
+        var bands = previous.Bands
             .Select(b => new CustomEqBand
             {
                 Index = b.Index,
@@ -323,20 +325,21 @@ public sealed class MainViewModel : BindBase
                            ?? CodeToDb(b.GainCode)),
             })
             .ToList();
-        var changed = bands.Where((b, i) => b.GainCode != _eqMirror.Bands[i].GainCode).ToList();
-        if (changed.Count == 0) return;
         var updated = new CustomEqState
         {
-            EqIndex = _eqMirror.EqIndex,
-            Byte0 = _eqMirror.Byte0,
+            EqIndex = previous.EqIndex,
+            Byte0 = previous.Byte0,
             Bands = bands,
-            DateBytes = _eqMirror.DateBytes,
-            Name = _eqMirror.Name,
+            DateBytes = previous.DateBytes,
+            Name = previous.Name,
         };
         _eqMirror = updated;
         _store.Apply(s => s with { CustomEq = updated });
-        foreach (var band in changed)
-            _session.Enqueue(CommandFactory.SetCustomEqBand(updated, updated.Bands.IndexOf(band)));
+        for (var i = 0; i < bands.Count; i++)
+        {
+            if (bands[i].GainCode != previous.Bands[i].GainCode)
+                _session.Enqueue(CommandFactory.SetCustomEqBand(updated, i));
+        }
     }
 
     public void OnAcousticChanged()

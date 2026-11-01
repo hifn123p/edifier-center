@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Windows;
+using EdifierCenter.App.Infrastructure;
 using EdifierCenter.App.Services;
 using EdifierCenter.App.Tray;
 using EdifierCenter.App.UI;
