@@ -82,7 +82,7 @@ public sealed class CalibrationViewModel : BindBase
         SkipAllCommand = new RelayCommand(Finish, () => !_busy);
 
         _store.StateChanged += s => _dispatcher.BeginInvoke(UpdateLive);
-        Advance();
+        _ = AdvanceAsync();
         UpdateLive();
     }
 
