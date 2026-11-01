@@ -30,7 +30,7 @@ public sealed class CustomEqState
         // [eqIndex][bandCount] + byte0 + 9×4
         if (p.Length < 2 + 1 + BandCount * 4) return false;
         if (p[0] != Mr5EqIndex) return false; // 仅支持 MR5BT 的 9 段布局
-        var count = Math.Min(p[1], BandCount);
+        var count = Math.Min((int)p[1], BandCount);
         var byte0 = p[2];
         var bands = new List<CustomEqBand>(count);
         for (var k = 0; k < count; k++)

@@ -227,8 +227,8 @@ public sealed class MainViewModel : BindBase
             {
                 _acousticMirror = acoustic;
                 LowCutoffHz = acoustic.LowCutoffHz;
-                SlopeIndex = Math.Min(acoustic.LowCutoffSlope, 3);
-                SpaceIndex = Math.Min(acoustic.AcousticSpace, 4);
+                SlopeIndex = Math.Min((int)acoustic.LowCutoffSlope, 3);
+                SpaceIndex = Math.Min((int)acoustic.AcousticSpace, 4);
                 DesktopOn = acoustic.DesktopControl == 1;
                 HasAcoustic = true;
             }
