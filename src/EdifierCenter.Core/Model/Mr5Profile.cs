@@ -1,4 +1,5 @@
 using System.Text.Json;
+using EdifierCenter.Core.Protocol;
 
 namespace EdifierCenter.Core.Model;
 

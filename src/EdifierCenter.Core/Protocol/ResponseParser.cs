@@ -1,3 +1,5 @@
+using EdifierCenter.Core.Model;
+
 namespace EdifierCenter.Core.Protocol;
 
 public enum UpdateKind
