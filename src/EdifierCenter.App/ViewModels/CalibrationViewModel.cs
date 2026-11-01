@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Threading;
+using EdifierCenter.App.Services;
 using EdifierCenter.Ble;
 using EdifierCenter.Core.Model;
 using EdifierCenter.Core.Protocol;
