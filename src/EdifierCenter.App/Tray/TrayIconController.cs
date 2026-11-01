@@ -1,9 +1,12 @@
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using EdifierCenter.App.Infrastructure;
 using EdifierCenter.App.Services;
+using EdifierCenter.App.UI;
 using EdifierCenter.App.ViewModels;
 using EdifierCenter.Ble;
 using EdifierCenter.Core;
@@ -53,7 +56,7 @@ public sealed class TrayIconController : IDisposable
 
     private void Add()
     {
-        var data = NotifyIconData.Create(_source.Handle, Id,
+        var data = NativeMethods.NotifyIconData.Create(_source.Handle, Id,
             NativeMethods.NIF_MESSAGE | NativeMethods.NIF_ICON | NativeMethods.NIF_TIP);
         data.uCallbackMessage = CallbackMessage;
         ApplyIcon(ref data);
@@ -65,7 +68,7 @@ public sealed class TrayIconController : IDisposable
     {
         if (!_added) return;
         if (CurrentState() == _lastState && _icon is not null) return;
-        var data = NotifyIconData.Create(_source.Handle, Id,
+        var data = NativeMethods.NotifyIconData.Create(_source.Handle, Id,
             NativeMethods.NIF_MESSAGE | NativeMethods.NIF_ICON | NativeMethods.NIF_TIP);
         data.uCallbackMessage = CallbackMessage;
         ApplyIcon(ref data);
@@ -79,7 +82,7 @@ public sealed class TrayIconController : IDisposable
             : _vm.IsMuted ? TrayIconState.Muted
             : TrayIconState.Connected;
 
-    private void ApplyIcon(ref NotifyIconData data)
+    private void ApplyIcon(ref NativeMethods.NotifyIconData data)
     {
         var state = CurrentState();
         _lastState = state;
@@ -156,7 +159,7 @@ public sealed class TrayIconController : IDisposable
     {
         if (_added)
         {
-            var data = NotifyIconData.Create(_source.Handle, Id, 0);
+            var data = NativeMethods.NotifyIconData.Create(_source.Handle, Id, 0);
             NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_DELETE, ref data);
         }
         if (_icon is { } icon)

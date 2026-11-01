@@ -13,8 +13,6 @@ public sealed class SettingsService
 
     private static string GetFilePath() => Path.Combine(AppContext.BaseDirectory, "config.json");
 
-    private string FilePath => GetFilePath();
-
     public static SettingsService Load()
     {
         try
@@ -34,7 +32,7 @@ public sealed class SettingsService
     {
         try
         {
-            File.WriteAllText(FilePath,
+            File.WriteAllText(GetFilePath(),
                 System.Text.Json.JsonSerializer.Serialize(this, new System.Text.Json.JsonSerializerOptions
                 {
                     WriteIndented = true,
