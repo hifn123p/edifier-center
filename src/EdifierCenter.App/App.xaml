@@ -194,7 +194,7 @@
                                                                       TextElement.Foreground="{DynamicResource TextBrush}"/>
                                                     <ContentPresenter Grid.Column="1" Margin="0,0,6,0" VerticalAlignment="Center"
                                                                       Content="{Binding Tag, RelativeSource={RelativeSource AncestorType=Expander}}"/>
-                                                    <Path Grid.Column="2" Data="M0,0 L4,4 L8,0"
+                                                    <Path Grid.Column="2" x:Name="Chev" Data="M0,0 L4,4 L8,0"
                                                           Stroke="{DynamicResource Text2Brush}" StrokeThickness="1.5"
                                                           VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                                                         <Path.RenderTransform>
