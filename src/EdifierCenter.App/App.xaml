@@ -8,6 +8,34 @@
                 <!-- 主题字典（Light/Dark）由 App.xaml.cs 按系统主题在运行时插入 -->
             </ResourceDictionary.MergedDictionaries>
 
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+            <Style x:Key="AccentButton" TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Padding" Value="14,6"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bg" Background="{TemplateBinding Background}" CornerRadius="6"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bg" Property="Opacity" Value="0.88"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.45"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <!-- 横向滑条（Win11 风格：已填充=强调色，轨道=中性） -->
             <Style x:Key="HSlider" TargetType="{x:Type Slider}">
                 <Setter Property="Height" Value="20"/>

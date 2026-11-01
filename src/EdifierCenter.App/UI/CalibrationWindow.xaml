@@ -1,0 +1,56 @@
+<Window x:Class="EdifierCenter.App.UI.CalibrationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edifier Center — 首次校准向导"
+        Width="480" SizeToContent="Height"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{DynamicResource PanelBrush}"
+        TextOptions.TextFormattingMode="Ideal"
+        UseLayoutRounding="True">
+    <Border Padding="20,16,20,16">
+        <StackPanel>
+
+            <!-- 向导进行中 -->
+            <StackPanel Visibility="{Binding WizardVisibility}">
+                <TextBlock Text="Edifier Center · 首次校准向导" FontSize="15" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextBrush}"/>
+                <TextBlock Text="{Binding StepCounter}" FontSize="11" Margin="0,4,0,0"
+                           Foreground="{DynamicResource Text2Brush}"/>
+                <TextBlock Text="{Binding StepTitle}" FontSize="14" FontWeight="SemiBold" Margin="0,12,0,0"
+                           Foreground="{DynamicResource AccentTextBrush}"/>
+                <TextBlock Text="{Binding StepInstruction}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0"
+                           Foreground="{DynamicResource TextBrush}"/>
+
+                <TextBox Text="{Binding NameValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Visibility="{Binding NameVisible, Converter={StaticResource BoolToVisibility}}"
+                         Margin="0,10,0,0" Padding="6,5" FontSize="12"/>
+
+                <TextBlock Text="{Binding LiveText}" FontSize="11" Margin="0,12,0,0"
+                           Foreground="{DynamicResource Text2Brush}"/>
+
+                <Grid Margin="0,14,0,0">
+                    <Button Style="{StaticResource GhostButton}" Content="跳过全部"
+                            Command="{Binding SkipAllCommand}" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource GhostButton}" Content="跳过此项"
+                                Command="{Binding SkipCommand}" Margin="0,0,8,0"/>
+                        <Button Style="{StaticResource AccentButton}" Content="下一步"
+                                Command="{Binding NextCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <!-- 完成页 -->
+            <StackPanel Visibility="{Binding FinishedVisibility}">
+                <TextBlock Text="校准完成" FontSize="15" FontWeight="SemiBold"
+                           Foreground="{DynamicResource GoodBrush}"/>
+                <TextBlock Text="{Binding Summary}" FontSize="12" TextWrapping="Wrap" Margin="0,10,0,0"
+                           Foreground="{DynamicResource TextBrush}"/>
+                <Button Style="{StaticResource AccentButton}" Content="完成" HorizontalAlignment="Right"
+                        Margin="0,16,0,0" Click="OnCloseClick"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Border>
+</Window>

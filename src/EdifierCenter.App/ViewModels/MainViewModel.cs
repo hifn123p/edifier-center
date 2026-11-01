@@ -137,6 +137,11 @@ public sealed class MainViewModel : BindBase
     /// <summary>托盘"退出"回调，由 App 组装时注入。</summary>
     public Action? ExitRequested { get; set; }
 
+    /// <summary>打开校准向导（由 App 注入）。</summary>
+    public Action? ShowCalibrationRequested { get; set; }
+
+    public RelayCommand ShowCalibrationCommand { get; private set; } = new(() => { });
+
     public MainViewModel(Dispatcher dispatcher, Mr5Profile profile, StateStore store,
         EdifierSession session, SettingsService settings)
     {
@@ -178,7 +183,11 @@ public sealed class MainViewModel : BindBase
         });
 
         _store.StateChanged += s => _dispatcher.BeginInvoke(() => ApplyState(s));
+        ShowCalibrationCommand = new RelayCommand(() => ShowCalibrationRequested?.Invoke());
     }
+
+    /// <summary>校准完成后 / 配置变化后，用当前快照刷新标签显示。</summary>
+    public void RefreshFromStore() => _dispatcher.BeginInvoke(() => ApplyState(_store.Current));
 
     private void ApplyState(SpeakerState s)
     {

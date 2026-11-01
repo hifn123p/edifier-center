@@ -1,4 +1,5 @@
 using System.IO;
+using EdifierCenter.Core.Model;
 using Microsoft.Win32;
 
 namespace EdifierCenter.App.Services;
@@ -10,6 +11,9 @@ public sealed class SettingsService
 
     public ulong? LastDeviceAddress { get; set; }
     public bool AutoStart { get; set; }
+
+    /// <summary>首次启动校准向导的产出（输入标签/声音模式 ID/EQ 增益换算），docs/03 §8。</summary>
+    public CalibrationData Calibration { get; set; } = new();
 
     private static string GetFilePath() => Path.Combine(AppContext.BaseDirectory, "config.json");
 

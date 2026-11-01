@@ -21,6 +21,10 @@ public partial class App : Application
     private StateStore? _store;
     private EdifierSession? _session;
     private TrayIconController? _tray;
+    private SettingsService? _settings;
+    private Mr5Profile? _profile;
+    private MainViewModel? _mainVm;
+    private bool _wizardShown;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -43,10 +47,24 @@ public partial class App : Application
         var profile = Mr5Profile.LoadEmbedded(name =>
             Assembly.GetExecutingAssembly().GetManifestResourceStream(name));
         var settings = SettingsService.Load();
+        _settings = settings;
+        _profile = profile;
+
+        // 应用已持久化的校准结果（首次运行为空操作，连接后就绪后会弹向导）
+        profile.ApplyCalibration(settings.Calibration);
+
         _store = new StateStore();
         var transport = new WinRtTransport();
         _session = new EdifierSession(profile, transport, _store);
-        _session.LinkStateChanged += state => FileLogger.Info($"[链路] {state}");
+        _session.LinkStateChanged += state =>
+        {
+            FileLogger.Info($"[链路] {state}");
+            if (state == LinkState.Ready && !settings.Calibration.Done && !_wizardShown)
+            {
+                _wizardShown = true;
+                Dispatcher.BeginInvoke(ShowCalibration);
+            }
+        };
 
         var vm = new MainViewModel(Dispatcher, profile, _store, _session, settings)
         {
@@ -56,6 +74,8 @@ public partial class App : Application
                 Shutdown();
             },
         };
+        _mainVm = vm;
+        vm.ShowCalibrationRequested = ShowCalibration;
         var flyout = new FlyoutWindow(vm);
         _tray = new TrayIconController(vm, _session, flyout);
 
@@ -70,6 +90,21 @@ public partial class App : Application
 
         _session.Start();
         FileLogger.Info("启动完成（托盘就绪）。");
+    }
+
+    /// <summary>打开校准向导（首次连接自动触发；托盘菜单可随时重跑）。</summary>
+    private void ShowCalibration()
+    {
+        if (_profile is null || _store is null || _session is null || _settings is null) return;
+        FileLogger.Info("打开校准向导");
+        var calibrationVm = new CalibrationViewModel(Dispatcher, _profile, _store, _session, _settings);
+        var window = new CalibrationWindow(calibrationVm);
+        calibrationVm.Completed += () =>
+        {
+            // 校准结果已写入 config.json 并覆盖 profile；刷新面板的标签显示
+            _mainVm?.RefreshFromStore();
+        };
+        window.Show();
     }
 
     private void ApplyThemeFromSystem()

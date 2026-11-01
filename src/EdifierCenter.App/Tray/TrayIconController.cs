@@ -134,6 +134,8 @@ public sealed class TrayIconController : IDisposable
             Items =
             {
                 MenuItem("打开面板", new RelayCommand(() => _flyout.ShowAtCursor())),
+                MenuItem("校准向导", _vm.ShowCalibrationCommand),
+                new Separator(),
                 MenuItem("静音 / 取消静音", _vm.MuteToggleCommand),
                 MenuItem("立即重连", _vm.ReconnectCommand),
                 autoStartItem,

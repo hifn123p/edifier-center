@@ -53,8 +53,9 @@
 
 1. 到 [Releases](../../releases) 下载 `EdifierCenter.exe`（自包含单文件，无需安装运行时）
 2. 放到**有写权限的用户目录**后运行（程序会在运行目录生成 `config.json` / `logs\` / `diagnostics\`）
-3. 首次连接若扫不到设备：按音箱背面按键进入配对模式
-4. 托盘图标：左键=控制面板，右键=菜单（静音 / 重连 / 自启 / 日志 / 退出）
+3. 首次连接成功后会自动弹出**校准向导**：按提示在手机 App 里切几次输入、把 EQ 调两个点、切三种模式——结果（输入标签 / EQ 增益码表 / 模式 ID）自动写入 `config.json`；全部可跳过，托盘菜单"校准向导"可重跑
+4. 首次扫描若扫不到设备：按音箱背面按键进入配对模式
+5. 托盘图标：左键=控制面板，右键=菜单（面板 / 校准 / 静音 / 重连 / 自启 / 日志 / 退出）
 
 ## 🛠️ 构建与发布（全部在 GitHub Actions，本地无需 .NET）
 
@@ -63,13 +64,12 @@
 | push / PR | `ci.yml`：restore → build → xUnit 单测 | 测试报告 artifact |
 | tag `v*` | `release.yml`：test → `dotnet publish` 单文件自包含 → GitHub Release | `EdifierCenter.exe` |
 
-本地工具链（仅 Phase 0 实机标定需要，Python 3.11+）：
+本地工具链（可选，Python 3.11+——调试用；标定已内置为程序首次启动向导）：
 
 ```bash
 pip install -r tools/requirements.txt
 python tools/phase0_probe.py scan        # 扫描音箱
 python tools/phase0_probe.py info        # 连接 + 读全部状态 + 监听推送
-python tools/phase0_probe.py calibrate   # 只读标定：输入标签 / EQ 增益码点 → 回填 profiles/mr5.json
 ```
 
 其他工具：`tools/make_icon.py`（从设计令牌重新生成 `app.ico`）。
@@ -103,9 +103,9 @@ MR5BT ◄── XLR 音频（Focusrite 4i4，不受影响）
 
 - [x] 协议调研与可行性分析（M60/M90、S880DB MKII、EdifierControl、omarchy-mr5）
 - [x] UI 设计定稿（docs/ui.html）
-- [x] 代码骨架（Core/Ble/App + 测试 + CI/Release 流水线）
-- [ ] **Phase 0**：实机冒烟 + 输入标签 / EQ 增益码点标定（回填 profiles/mr5.json）
-- [ ] **M1 收尾**：CI 编译修复 + 真机联调
+- [x] 代码骨架（Core/Ble/App + 测试 + CI/Release 流水线），**CI 编译与测试已通过**
+- [x] 校准内置：首次启动校准向导（输入标签 / EQ 增益码表 / 模式 ID → config.json）
+- [ ] **M1 收尾**：真机联调（连接、音量、EQ、状态显示逐项验收）
 - [ ] **M2**：WPF-UI/H.NotifyIcon 控件精化 · Ble 状态机单测 · 自启打磨 · 首个 Release
 - [ ] **M3**（可选）：托盘滚轮 OSD、全局热键、安装器
 

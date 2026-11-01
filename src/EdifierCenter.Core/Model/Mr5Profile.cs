@@ -5,7 +5,7 @@ namespace EdifierCenter.Core.Model;
 
 public sealed class SoundModeDef
 {
-    public byte? Id { get; init; }
+    public byte? Id { get; set; }
     public string Label { get; init; } = "";
 }
 
@@ -60,6 +60,31 @@ public sealed class Mr5Profile
             ?? throw new InvalidOperationException("profiles/mr5.json 反序列化失败");
     }
 
+    /// <summary>
+    /// 将程序内校准向导的产出（config.json → CalibrationData）覆盖到 profile：
+    /// 输入标签表、声音模式 ID、EQ 增益换算。未完成校准时为空操作（回退内置假设）。
+    /// </summary>
+    public void ApplyCalibration(CalibrationData calibration)
+    {
+        if (calibration is null || !calibration.Done) return;
+
+        foreach (var (key, label) in calibration.InputLabels)
+        {
+            if (byte.TryParse(key, out var b))
+                Inputs.Labels[b.ToString()] = label;
+        }
+        foreach (var (label, value) in calibration.SoundModeIds)
+        {
+            var def = SoundModes.FirstOrDefault(m => m.Label == label);
+            if (def is not null && byte.TryParse(value, out var b))
+                def.Id = b;
+        }
+        if (calibration.EqGainCodeZeroDb is { } zero)
+            CustomEq.GainCodeZeroDb = zero;
+        if (calibration.EqGainDbPerCode > 0)
+            CustomEq.GainDbPerCode = calibration.EqGainDbPerCode;
+    }
+
     public sealed class DiscoveryDef
     {
         public string[] SearchServiceUuids { get; init; } = [];
@@ -83,8 +108,8 @@ public sealed class Mr5Profile
         public ushort[] FrequenciesHz { get; init; } = [62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
         public double StepDb { get; init; } = 0.5;
         public int[] UiRangeDb { get; init; } = [-6, 6];
-        public int? GainCodeZeroDb { get; init; }
-        public double? GainDbPerCode { get; init; }
+        public int? GainCodeZeroDb { get; set; }
+        public double? GainDbPerCode { get; set; }
     }
 
     public sealed class AcousticDef
