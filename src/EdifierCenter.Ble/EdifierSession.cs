@@ -31,8 +31,7 @@ public sealed class EdifierSession : IAsyncDisposable
         });
     private readonly List<byte[]> _recentFrames = [];
     private readonly object _frameGate = new();
-    private readonly TaskCompletionSource _restart =
-        new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private TaskCompletionSource _restart = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private CancellationTokenSource? _cts;
     private Task? _loop;
 

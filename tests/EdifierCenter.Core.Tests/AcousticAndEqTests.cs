@@ -1,5 +1,6 @@
 using EdifierCenter.Core.Model;
 using EdifierCenter.Core.Protocol;
+using Xunit;
 
 namespace EdifierCenter.Core.Tests;
 

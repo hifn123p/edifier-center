@@ -46,7 +46,8 @@ public sealed class WinRtTransport : IEdifierTransport
                 break;
             }
         }
-        watcher.Received += OnReceived;
+        watcher.Received += new Windows.Foundation.TypedEventHandler<
+            BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>(OnReceived);
         watcher.Start();
         try
         {
@@ -61,7 +62,8 @@ public sealed class WinRtTransport : IEdifierTransport
         finally
         {
             watcher.Stop();
-            watcher.Received -= OnReceived;
+            watcher.Received -= new Windows.Foundation.TypedEventHandler<
+                BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>(OnReceived);
         }
     }
 
@@ -84,7 +86,8 @@ public sealed class WinRtTransport : IEdifierTransport
         if (notifyResult.Status != GattCommunicationStatus.Success || notifyResult.Characteristics.Count == 0)
             throw new IOException("通知特征不可用");
         _notify = notifyResult.Characteristics[0];
-        _notify.ValueChanged += OnNotify;
+        _notify.ValueChanged += new Windows.Foundation.TypedEventHandler<
+            GattCharacteristic, GattValueChangedEventArgs>(OnNotify);
 
         var cccd = await _notify.WriteClientCharacteristicConfigurationDescriptorAsync(
             GattClientCharacteristicConfigurationDescriptorValue.Notify);
@@ -115,10 +118,11 @@ public sealed class WinRtTransport : IEdifierTransport
     {
         var watcher = new BluetoothLEAdvertisementWatcher { ScanningMode = BluetoothLEScanningMode.Passive };
         _rssiWatcher = watcher;
-        _rssiHandler = (w, args) =>
+        _rssiHandler = new Windows.Foundation.TypedEventHandler<
+            BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>((w, args) =>
         {
             if (args.BluetoothAddress == _address) RssiChanged?.Invoke(args.RawSignalStrengthInDBm);
-        };
+        });
         watcher.Received += _rssiHandler;
         try { watcher.Start(); } catch { /* RSSI 仅辅助，失败可忽略 */ }
     }
@@ -156,7 +160,15 @@ public sealed class WinRtTransport : IEdifierTransport
         if (_device is { } device)
         {
             try { device.ConnectionStatusChanged -= OnConnectionStatusChanged; } catch { }
-            if (_notify is { } notify) { try { notify.ValueChanged -= OnNotify; } catch { } }
+            if (_notify is { } notify)
+            {
+                try
+                {
+                    notify.ValueChanged -= new Windows.Foundation.TypedEventHandler<
+                        GattCharacteristic, GattValueChangedEventArgs>(OnNotify);
+                }
+                catch { }
+            }
         }
         RaiseDisconnected();
         if (_device is { } d) d.Dispose();
@@ -166,5 +178,6 @@ public sealed class WinRtTransport : IEdifierTransport
         await Task.CompletedTask;
     }
 
-    private EventHandler<BluetoothLEAdvertisementReceivedEventArgs>? _rssiHandler;
+    private Windows.Foundation.TypedEventHandler<
+        BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>? _rssiHandler;
 }

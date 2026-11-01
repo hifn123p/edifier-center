@@ -22,6 +22,9 @@ public interface IEdifierTransport : IAsyncDisposable
     /// <summary>链路断开（音箱关机 / 超范围 / 连接丢失）。</summary>
     event Action? Disconnected;
 
+    /// <summary>断线事件的任务形式（供会话 WhenAny 等待）。每次 ConnectAsync 后重置。</summary>
+    Task DisconnectedTask { get; }
+
     /// <summary>RSSI 变化（被动扫描，仅连接期间）。</summary>
     event Action<short>? RssiChanged;
 
