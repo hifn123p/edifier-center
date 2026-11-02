@@ -50,13 +50,10 @@ public sealed class WinRtTransport : IEdifierTransport
                     return;
                 }
             }
-            foreach (var section in args.Advertisement.ManufacturerSections)
+            if (args.Advertisement.GetManufacturerDataByCompanyId(0x07E0).Count > 0)
             {
-                if (section.CompanyId == 0x07E0)
-                {
-                    tcs.TrySetResult(args.BluetoothAddress);
-                    return;
-                }
+                tcs.TrySetResult(args.BluetoothAddress);
+                return;
             }
             if (string.Equals(args.Advertisement.LocalName, "EDIFIER BLE", StringComparison.OrdinalIgnoreCase))
             {
