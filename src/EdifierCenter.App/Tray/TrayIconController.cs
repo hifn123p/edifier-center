@@ -50,9 +50,25 @@ public sealed class TrayIconController : IDisposable
             _reconnecting = state is LinkState.Scanning or LinkState.Connecting or LinkState.Reconnecting;
             _dispatcher.BeginInvoke(Update);
         };
+        session.ScanHintRaised += () => _dispatcher.BeginInvoke(() =>
+            ShowBalloon("未发现音箱",
+                "已扫描 45 秒未发现设备：请按音箱背面配对键（长按数秒）后等待自动重连；" +
+                "若手机 App 正在占用连接，请先断开手机蓝牙或关闭 App。"));
 
         Add();
         Update();
+    }
+
+    /// <summary>托盘气泡提示（扫描无结果等场景）。</summary>
+    public void ShowBalloon(string title, string text)
+    {
+        if (!_added) return;
+        var data = NativeMethods.NotifyIconData.Create(_source.Handle, Id, NativeMethods.NIF_INFO);
+        data.szInfoTitle = title;
+        data.szInfo = text;
+        data.dwInfoFlags = NativeMethods.NIIF_INFO;
+        data.uVersion = 10000; // 显示时长（ms）
+        NativeMethods.Shell_NotifyIcon(NativeMethods.NIM_MODIFY, ref data);
     }
 
     private void Add()
@@ -92,7 +108,9 @@ public sealed class TrayIconController : IDisposable
             _ = NativeMethods.DestroyIcon(old.Handle);
             old.Dispose();
         }
-        _icon = TrayIconFactory.Create(state, 20);
+        // 托盘图标使用系统小图标尺寸（随 DPI 缩放），而不是固定像素
+        var px = Math.Max(16, NativeMethods.GetSystemMetrics(NativeMethods.SM_CXSMICON));
+        _icon = TrayIconFactory.Create(state, px);
         data.hIcon = _icon.Handle;
         data.szTip = _vm.IsConnected
             ? $"{_vm.DeviceName} · 已连接 · 音量 {_vm.Volume}/{_vm.VolumeMax}{(_vm.IsMuted ? " · 已静音" : "")}"

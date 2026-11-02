@@ -11,7 +11,6 @@
     <AssemblyName>EdifierCenter</AssemblyName>
     <RootNamespace>EdifierCenter.App</RootNamespace>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
-    <InvariantGlobalization>true</InvariantGlobalization>
     <TieredPGO>true</TieredPGO>
   </PropertyGroup>
 
@@ -21,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- 可移植布局：配置/日志/诊断均落在 exe 运行目录（docs/03 §9） -->
+    <!-- 可移植布局：配置/日志/诊断均落在 exe 运行目录（docs/03 §8） -->
     <EmbeddedResource Include="..\..\profiles\mr5.json" LogicalName="mr5.json" />
+    <Resource Include="Assets\app.ico" />
   </ItemGroup>
 
 </Project>

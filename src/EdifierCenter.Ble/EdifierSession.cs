@@ -38,6 +38,9 @@ public sealed class EdifierSession : IAsyncDisposable
     public event Action<LinkState>? LinkStateChanged;
     public LinkState State { get; private set; } = LinkState.Idle;
 
+    /// <summary>扫描长时间无结果（45s）——提示用户按音箱背面配对键 / 排查手机 App 占用。</summary>
+    public event Action? ScanHintRaised;
+
     public EdifierSession(Mr5Profile profile, IEdifierTransport transport, StateStore store)
     {
         _profile = profile;
@@ -89,7 +92,9 @@ public sealed class EdifierSession : IAsyncDisposable
             try
             {
                 SetState(backoffIndex == 0 ? LinkState.Scanning : LinkState.Reconnecting);
-                var address = await _transport.FindFirstAsync(_profile.Discovery.SearchServiceUuids, ct);
+                var scanTask = _transport.FindFirstAsync(_profile.Discovery.SearchServiceUuids, ct);
+                var heartbeat = ScanHeartbeatAsync(scanTask, ct);
+                var address = await scanTask;
                 SetState(LinkState.Connecting);
                 await _transport.ConnectAsync(address, _profile, ct);
                 backoffIndex = 0;
@@ -127,6 +132,26 @@ public sealed class EdifierSession : IAsyncDisposable
                 _restart = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             }
             catch (OperationCanceledException) { return; }
+        }
+    }
+
+    /// <summary>扫描心跳：每 10s 记录日志；45s 仍无结果时触发 ScanHintRaised（仅一次/轮）。</summary>
+    private async Task ScanHeartbeatAsync(Task scanTask, CancellationToken ct)
+    {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        var hinted = false;
+        while (!scanTask.IsCompleted && !ct.IsCancellationRequested)
+        {
+            try { await Task.Delay(TimeSpan.FromSeconds(10), ct); }
+            catch (OperationCanceledException) { return; }
+            if (scanTask.IsCompleted) return;
+            Log($"扫描中… 已 {sw.Elapsed.TotalSeconds:0}s 未发现设备");
+            if (!hinted && sw.Elapsed.TotalSeconds >= 45)
+            {
+                hinted = true;
+                Log("长时间未发现设备：请按音箱背面配对键，或断开手机 App 对音箱的占用");
+                ScanHintRaised?.Invoke();
+            }
         }
     }
 

@@ -21,6 +21,12 @@ public partial class FlyoutWindow : Window
         InitializeComponent();
         _vm = vm;
         DataContext = _vm;
+        try
+        {
+            Icon = System.Windows.Media.Imaging.BitmapFrame.Create(
+                new Uri("pack://application:,,,/Assets/app.ico"));
+        }
+        catch { /* 图标加载失败不影响功能 */ }
         Deactivated += (_, _) => Hide();
         PreviewKeyDown += (_, e) =>
         {

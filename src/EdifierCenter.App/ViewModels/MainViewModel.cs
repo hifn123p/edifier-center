@@ -100,10 +100,30 @@ public sealed class MainViewModel : BindBase
     public bool IsMuted { get; private set; }
     public bool HasEq { get; private set; }
     public bool HasAcoustic { get; private set; }
-    public double LowCutoffHz { get; private set; } = 40;
-    public int SlopeIndex { get; private set; } = 1;
-    public int SpaceIndex { get; private set; } = 0;
-    public bool DesktopOn { get; private set; }
+    public double LowCutoffHz
+    {
+        get => _lowCutoffHz;
+        set { if (Set(ref _lowCutoffHz, value)) OnAcousticChanged(); }
+    }
+    private double _lowCutoffHz = 40;
+    public int SlopeIndex
+    {
+        get => _slopeIndex;
+        set { if (Set(ref _slopeIndex, value)) OnAcousticChanged(); }
+    }
+    private int _slopeIndex = 1;
+    public int SpaceIndex
+    {
+        get => _spaceIndex;
+        set { if (Set(ref _spaceIndex, value)) OnAcousticChanged(); }
+    }
+    private int _spaceIndex;
+    public bool DesktopOn
+    {
+        get => _desktopOn;
+        set { if (Set(ref _desktopOn, value)) OnAcousticChanged(); }
+    }
+    private bool _desktopOn;
     public bool AutoStartEnabled { get; private set; }
 
     public Visibility BannerVisibility => IsConnected ? Visibility.Collapsed : Visibility.Visible;

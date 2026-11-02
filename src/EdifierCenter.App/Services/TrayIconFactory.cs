@@ -13,13 +13,28 @@ public enum TrayIconState
 
 /// <summary>
 /// 运行时绘制托盘图标（应用图标微缩版 + 状态点；静音叠加红色斜杠）——
-/// docs/ui.html §02 设计。免维护多尺寸 .ico 资产，按 DPI 直接渲染目标像素。
+/// docs/ui.html §02 设计。以 256px 母版矢量绘制后高质量降采样，免维护多尺寸 .ico 资产。
 /// </summary>
 public static class TrayIconFactory
 {
-    public static Icon Create(TrayIconState state, int px = 20)
+    public static Icon Create(TrayIconState state, int px)
     {
-        using var bmp = new Bitmap(px, px);
+        using var master = RenderMaster(state, 256);
+        var bmp = new Bitmap(px, px);
+        using (var g = Graphics.FromImage(bmp))
+        {
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.DrawImage(master, new Rectangle(0, 0, px, px), 0, 0, 256, 256, GraphicsUnit.Pixel);
+        }
+        var hIcon = bmp.GetHicon();
+        return Icon.FromHandle(hIcon);
+    }
+
+    private static Bitmap RenderMaster(TrayIconState state, int px)
+    {
+        var bmp = new Bitmap(px, px);
         using (var g = Graphics.FromImage(bmp))
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -79,13 +94,12 @@ public static class TrayIconFactory
 
             // 断开整体减淡
             if (state == TrayIconState.Disconnected)
-            using (var veil = new SolidBrush(Color.FromArgb(120, Color.FromArgb(0x9A, 0x9A, 0x9A))))
             {
+                using var veil = new SolidBrush(Color.FromArgb(120, Color.FromArgb(0x9A, 0x9A, 0x9A)));
                 g.FillEllipse(veil, 0, 0, px, px);
             }
         }
-        var hIcon = bmp.GetHicon();
-        return Icon.FromHandle(hIcon);
+        return bmp;
     }
 
     private static GraphicsPath RoundedRect(RectangleF rect, float radius)
