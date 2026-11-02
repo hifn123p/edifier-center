@@ -4,10 +4,12 @@
   "protocol": "connex-v2",
   "discovery": {
     "searchServiceUuids": [
+      "00000a03-0000-1000-8000-00805f9b34fb",
       "00003a01-0000-1000-8000-00805f9b34fb",
       "00007e03-0000-1000-8000-00805f9b34fb"
     ],
     "serviceUuids": [
+      "48090a03-1a48-11e9-ab14-d663bd873d93",
       "48093a01-1a48-11e9-ab14-d663bd873d93",
       "48097e03-1a48-11e9-ab14-d663bd873d93"
     ],
@@ -32,8 +34,8 @@
     "frequenciesHz": [62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
     "stepDb": 0.5,
     "uiRangeDb": [-6, 6],
-    "gainCodeZeroDb": null,
-    "gainDbPerCode": null
+    "gainCodeZeroDb": 6,
+    "gainDbPerCode": 0.5
   },
   "acousticTuning": {
     "lowCutoffHz": { "min": 20, "max": 100, "step": 5 },
@@ -59,7 +61,7 @@
   },
   "forbidden": ["reset(0x07)", "shutdown(0xCE)", "disconnectBt(0xCD)", "ota", "factoryReset", "unpair"],
   "calibration": {
-    "phase": "PENDING",
-    "note": "soundModes.id / inputs.group+labels / customEq.gainCodeZeroDb+gainDbPerCode 由 tools/phase0_probe.py 标定后回填"
+    "phase": "PARTIAL",
+    "note": "2026-11-02 实机验证（MR5BT 固件 1.0.3）：服务 48090a03、音量 0-30、EQ 增益 (code−6)×0.5dB、声学调校 7 字节、自定义 EQ 尾部含 UTF-8 名称，全部确认；inputs.labels / soundModes.id 由内置校准向导补齐。"
   }
 }

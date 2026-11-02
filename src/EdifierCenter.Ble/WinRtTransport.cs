@@ -39,11 +39,28 @@ public sealed class WinRtTransport : IEdifierTransport
         };
         void OnReceived(BluetoothLEAdvertisementWatcher w, BluetoothLEAdvertisementReceivedEventArgs args)
         {
+            // 匹配策略（MR5BT 实测：广播只带 00000a03 且名字为 EDIFIER BLE）：
+            // ① 广播服务 UUID 命中 profile 列表；② 厂商 ID = 0x07E0（Edifier）；
+            // ③ 广播名 = EDIFIER BLE。任一命中即认。
             foreach (var uuid in args.Advertisement.ServiceUuids)
             {
-                if (!uuids.Contains(uuid)) continue;
+                if (uuids.Contains(uuid))
+                {
+                    tcs.TrySetResult(args.BluetoothAddress);
+                    return;
+                }
+            }
+            foreach (var section in args.Advertisement.ManufacturerSections)
+            {
+                if (section.CompanyId == 0x07E0)
+                {
+                    tcs.TrySetResult(args.BluetoothAddress);
+                    return;
+                }
+            }
+            if (string.Equals(args.Advertisement.LocalName, "EDIFIER BLE", StringComparison.OrdinalIgnoreCase))
+            {
                 tcs.TrySetResult(args.BluetoothAddress);
-                break;
             }
         }
         watcher.Received += new Windows.Foundation.TypedEventHandler<
@@ -75,17 +92,34 @@ public sealed class WinRtTransport : IEdifierTransport
         _device = await BluetoothLEDevice.FromBluetoothAddressAsync(address)
             ?? throw new IOException($"无法连接 BLE 设备 {address:X12}");
 
-        var serviceUuid = Guid.Parse(profile.Discovery.ServiceUuids[0]);
-        var services = await _device.GetGattServicesForUuidAsync(serviceUuid, BluetoothCacheMode.Uncached);
-        if (services.Status != GattCommunicationStatus.Success || services.Services.Count == 0)
-            throw new IOException($"控制服务未暴露（status={services.Status}）——请按音箱背面键进入配对模式后重试");
-        var service = services.Services[0];
+        // 依次尝试 profile 中的服务 UUID（MR5BT=0a03 / 标准版=3a01 / 8625 改版=7e03），
+        // 第一个能取到特征码的即为该型号的控制服务。
+        GattCharacteristic? notify = null;
+        GattCharacteristic? write = null;
+        GattDeviceService? controlService = null;
+        foreach (var serviceUuidString in profile.Discovery.ServiceUuids)
+        {
+            var serviceUuid = Guid.Parse(serviceUuidString);
+            var services = await _device.GetGattServicesForUuidAsync(serviceUuid, BluetoothCacheMode.Uncached);
+            if (services.Status != GattCommunicationStatus.Success || services.Services.Count == 0)
+                continue;
+            var service = services.Services[0];
+            var notifyResult = await service.GetCharacteristicsForUuidAsync(
+                Guid.Parse(profile.Discovery.NotifyCharacteristicUuid), BluetoothCacheMode.Uncached);
+            var writeResult = await service.GetCharacteristicsForUuidAsync(
+                Guid.Parse(profile.Discovery.WriteCharacteristicUuid), BluetoothCacheMode.Uncached);
+            if (notifyResult.Status != GattCommunicationStatus.Success || notifyResult.Characteristics.Count == 0
+                || writeResult.Status != GattCommunicationStatus.Success || writeResult.Characteristics.Count == 0)
+                continue;
+            controlService = service;
+            notify = notifyResult.Characteristics[0];
+            write = writeResult.Characteristics[0];
+            break;
+        }
+        if (controlService is null || notify is null || write is null)
+            throw new IOException("控制服务未暴露——请按音箱背面键进入配对模式后重试");
 
-        var notifyResult = await service.GetCharacteristicsForUuidAsync(
-            Guid.Parse(profile.Discovery.NotifyCharacteristicUuid), BluetoothCacheMode.Uncached);
-        if (notifyResult.Status != GattCommunicationStatus.Success || notifyResult.Characteristics.Count == 0)
-            throw new IOException("通知特征不可用");
-        _notify = notifyResult.Characteristics[0];
+        _notify = notify;
         _notify.ValueChanged += new Windows.Foundation.TypedEventHandler<
             GattCharacteristic, GattValueChangedEventArgs>(OnNotify);
 
@@ -94,12 +128,7 @@ public sealed class WinRtTransport : IEdifierTransport
         if (cccd != GattCommunicationStatus.Success)
             throw new IOException($"订阅通知失败（status={cccd}）");
 
-        var writeResult = await service.GetCharacteristicsForUuidAsync(
-            Guid.Parse(profile.Discovery.WriteCharacteristicUuid), BluetoothCacheMode.Uncached);
-        if (writeResult.Status != GattCommunicationStatus.Success || writeResult.Characteristics.Count == 0)
-            throw new IOException("写入特征不可用");
-        _write = writeResult.Characteristics[0];
-
+        _write = write;
         _device.ConnectionStatusChanged += OnConnectionStatusChanged;
 
         StartRssiWatcher();
