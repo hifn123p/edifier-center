@@ -43,7 +43,7 @@ public sealed class TrayIconController : IDisposable
         var parameters = new HwndSourceParameters("EdifierCenterTrayWindow")
         {
             // 消息专用窗口（HWND_MESSAGE）：只收托盘回调消息，永远不会显示成可见窗口
-            ParentHwnd = new IntPtr(-3),
+            ParentWindow = new IntPtr(-3),
             WindowStyle = 0,
             ExtendedWindowStyle = 0,
             Width = 0,
