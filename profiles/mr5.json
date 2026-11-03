@@ -33,7 +33,7 @@
     "bandCount": 9,
     "frequenciesHz": [62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
     "stepDb": 0.5,
-    "uiRangeDb": [-6, 6],
+    "uiRangeDb": [-3, 3],
     "gainCodeZeroDb": 6,
     "gainDbPerCode": 0.5
   },

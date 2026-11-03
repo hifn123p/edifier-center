@@ -28,6 +28,10 @@ public sealed class CalibrationViewModel : BindBase
     private int? _eqZeroCode;
     private double? _eqDbPerCode;
     private bool _busy;
+    private byte? _baselineInput;
+    private byte? _baselineMode;
+    private byte? _baselineEqCode;
+    private int _skippedCount;
 
     public string StepCounter { get; private set; } = "";
     public string StepTitle { get; private set; } = "准备中";
@@ -56,7 +60,7 @@ public sealed class CalibrationViewModel : BindBase
         _profile = profile;
         _store = store;
         _session = session;
-        _ = settings;
+        _settings = settings;
 
         _steps =
         [
@@ -82,10 +86,15 @@ public sealed class CalibrationViewModel : BindBase
         SkipCommand = new RelayCommand(async () => await AdvanceAsync(), () => !_busy);
         SkipAllCommand = new RelayCommand(Finish, () => !_busy);
 
-        _store.StateChanged += s => _dispatcher.BeginInvoke(UpdateLive);
+        _store.StateChanged += OnStoreChanged;
         _ = AdvanceAsync();
         UpdateLive();
     }
+
+    private void OnStoreChanged(SpeakerState s) => _dispatcher.BeginInvoke(UpdateLive);
+
+    /// <summary>解除 StateStore 订阅（窗口关闭/向导完成时调用，防止事件泄漏）。</summary>
+    public void Detach() => _store.StateChanged -= OnStoreChanged;
 
     private async Task NextAsync()
     {
@@ -98,8 +107,14 @@ public sealed class CalibrationViewModel : BindBase
             switch (step.Kind)
             {
                 case "input":
+                    // 基线比对：用户没切输入时不记录，防止把同一字节错标成多个名称
                     if (_store.Current.InputId is { } b)
                     {
+                        if (_baselineInput is { } baseline && b == baseline)
+                        {
+                            _skippedCount++;
+                            break;
+                        }
                         var label = step.Label == "其他"
                             ? (string.IsNullOrWhiteSpace(NameValue) ? $"输入 {b}" : NameValue.Trim())
                             : step.Label;
@@ -109,14 +124,25 @@ public sealed class CalibrationViewModel : BindBase
 
                 case "eq0":
                     _session.Enqueue(CommandId.GetCustomEq);
-                    await Task.Delay(900);
-                    _eqZeroCode = _store.Current.CustomEq?.Bands.FirstOrDefault(x => x.Index == 0)?.GainCode;
+                    await Task.Delay(900).ConfigureAwait(true);
+                    var zeroCandidate = _store.Current.CustomEq?.Bands.FirstOrDefault(x => x.Index == 0)?.GainCode;
+                    if (_baselineEqCode is { } baseEq && zeroCandidate == baseEq)
+                    {
+                        _skippedCount++; // 用户未改动，避免把任意码点误标为 0dB
+                        break;
+                    }
+                    _eqZeroCode = zeroCandidate;
                     break;
 
                 case "eq2":
                     _session.Enqueue(CommandId.GetCustomEq);
-                    await Task.Delay(900);
+                    await Task.Delay(900).ConfigureAwait(true);
                     var code2 = _store.Current.CustomEq?.Bands.FirstOrDefault(x => x.Index == 0)?.GainCode;
+                    if (_baselineEqCode is { } baseEq2 && code2 == baseEq2)
+                    {
+                        _skippedCount++; // 未改动，不参与码距验证
+                        break;
+                    }
                     if (_eqZeroCode is { } zero && code2 is { } c2 && c2 != zero)
                     {
                         // +2dB = |code2 − zero| 个码距 → 每 1 码的 dB 数
@@ -125,8 +151,16 @@ public sealed class CalibrationViewModel : BindBase
                     break;
 
                 case "mode":
+                    // 基线比对：未切模式则不记录
                     if (_store.Current.SoundMode is { } m)
+                    {
+                        if (_baselineMode is { } baseline && m == baseline)
+                        {
+                            _skippedCount++;
+                            break;
+                        }
                         _modeIds[step.Label] = m.ToString();
+                    }
                     break;
             }
         }
@@ -151,8 +185,17 @@ public sealed class CalibrationViewModel : BindBase
         StepTitle = step.Title;
         StepInstruction = step.Instruction;
         NameVisible = step.NeedsName;
+        // 记录本步骤基线：下一步点击时若音箱状态未变（用户没操作），跳过记录
+        switch (step.Kind)
+        {
+            case "input": _baselineInput = _store.Current.InputId; break;
+            case "mode": _baselineMode = _store.Current.SoundMode; break;
+        }
         if (step.Kind is "eq0" or "eq2")
+        {
             _session.Enqueue(CommandId.GetCustomEq); // 预读当前曲线
+            _baselineEqCode = _store.Current.CustomEq?.Bands.FirstOrDefault(x => x.Index == 0)?.GainCode;
+        }
         Raise(nameof(StepCounter));
         Raise(nameof(StepTitle));
         Raise(nameof(StepInstruction));
@@ -176,7 +219,8 @@ public sealed class CalibrationViewModel : BindBase
             $"输入标签：{_inputLabels.Count} 项\n" +
             $"声音模式 ID：{_modeIds.Count} 项\n" +
             $"EQ 增益：0dB = 码 {calibration.EqGainCodeZeroDb?.ToString() ?? "默认 6"}，"
-            + $"{calibration.EqGainDbPerCode:0.##}dB/码\n\n" +
+            + $"{calibration.EqGainDbPerCode:0.##}dB/码\n" +
+            $"跳过/未检测到变化：{_skippedCount} 项\n\n" +
             "结果已写入运行目录 config.json。可随时从托盘菜单重新运行向导。";
         Raise(nameof(Finished));
         Raise(nameof(Summary));

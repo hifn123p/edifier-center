@@ -20,7 +20,7 @@ public static class TrayIconFactory
     public static Icon Create(TrayIconState state, int px)
     {
         using var master = RenderMaster(state, 256);
-        var bmp = new Bitmap(px, px);
+        using var bmp = new Bitmap(px, px);
         using (var g = Graphics.FromImage(bmp))
         {
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -28,7 +28,7 @@ public static class TrayIconFactory
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.DrawImage(master, new Rectangle(0, 0, px, px), 0, 0, 256, 256, GraphicsUnit.Pixel);
         }
-        var hIcon = bmp.GetHicon();
+        var hIcon = bmp.GetHicon(); // GetHicon 会拷贝位图数据，随后释放 bmp 是安全的
         return Icon.FromHandle(hIcon);
     }
 

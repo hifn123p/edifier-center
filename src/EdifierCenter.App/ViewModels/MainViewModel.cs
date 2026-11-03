@@ -184,9 +184,11 @@ public sealed class MainViewModel : BindBase
             _volumeTimer.Stop();
             if (_pendingVolume >= 0)
             {
+                _lastVolumeSent = DateTime.UtcNow;
                 _session.Enqueue(CommandFactory.SetVolume(_pendingVolume, VolumeMax));
                 _pendingVolume = -1;
             }
+            _volumeTimer.Interval = TimeSpan.FromMilliseconds(_profile.Volume.ThrottleMs);
         };
 
         _acousticTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
@@ -338,13 +340,31 @@ public sealed class MainViewModel : BindBase
 
     // ---- UI → 命令队列 ----
 
+    private DateTime _lastVolumeSent = DateTime.MinValue;
+
+    /// <summary>
+    /// 音量节流（docs/03 §5）：首个变化立即下发（旋钮跟手），拖动期间合并为每 150ms 最多一条，
+    /// 停止拖动后由计时器补发最终值。
+    /// </summary>
     public void SetVolumeFromUi(double value)
     {
         if (!IsConnected) return;
         var v = (int)Math.Round(value);
         if (v > 0) _lastNonZeroVolume = v;
         if (v != Volume) _store.Apply(s => s with { Volume = v }); // 乐观更新，推送校正
+
+        var now = DateTime.UtcNow;
+        var elapsedMs = (now - _lastVolumeSent).TotalMilliseconds;
+        if (elapsedMs >= _profile.Volume.ThrottleMs)
+        {
+            _lastVolumeSent = now;
+            _session.Enqueue(CommandFactory.SetVolume(v, VolumeMax));
+            _pendingVolume = -1;
+            _volumeTimer.Stop();
+            return;
+        }
         _pendingVolume = v;
+        _volumeTimer.Interval = TimeSpan.FromMilliseconds(Math.Max(30, _profile.Volume.ThrottleMs - elapsedMs));
         _volumeTimer.Stop();
         _volumeTimer.Start();
     }
@@ -411,10 +431,10 @@ public sealed class MainViewModel : BindBase
 
     private void SendAcoustic(bool reset)
     {
-        if (!IsConnected) return;
-        var previous = _acousticMirror
-            ?? new AcousticTuning(
-                (byte)(SelectedSoundMode?.Id ?? 0), 1, 0, 40, 1, 0, 0);
+        // 必须先读到音箱当前声学状态再写（镜像来自 0xD5 推送/查询），
+        // 否则 mode/index/byte0 是猜测值，可能意外切换用户当前的声音模式
+        if (!IsConnected || _acousticMirror is null) return;
+        var previous = _acousticMirror.Value;
         var tuning = new AcousticTuning(
             previous.Mode,
             previous.Index,

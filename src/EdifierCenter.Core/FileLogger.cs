@@ -33,8 +33,12 @@ public static class FileLogger
     public static void Error(string message, Exception? exception = null) =>
         Write("ERROR", exception is null ? message : $"{message} :: {exception}");
 
-    private static void Write(string level, string message) =>
+    private static void Write(string level, string message)
+    {
+        // 队列上限保护：磁盘写入持续失败（如磁盘满）时丢弃最旧日志，防止内存无限增长
+        while (Pending.Count >= 5000) Pending.TryDequeue(out _);
         Pending.Enqueue($"{DateTime.Now:HH:mm:ss.fff} [{level}] {message}");
+    }
 
     private static void Flush()
     {

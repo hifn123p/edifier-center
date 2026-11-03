@@ -196,8 +196,17 @@ public sealed class EdifierSession : IAsyncDisposable
                 _restart.Task).ConfigureAwait(false);
             ct.ThrowIfCancellationRequested();
             if (completed == _restart.Task) throw new IOException("手动重连");
-            // 断线 / 写失败等：异常上抛交由 RunAsync 统一走断线流程
-            await completed.ConfigureAwait(false);
+            // 断线 / 写失败等：异常上抛交由 RunAsync 统一走断线流程。
+            // 注意：readyCts 取消（手动重连/断线）会让 pollTask 抛 OCE——必须转成普通异常，
+            // 否则会被 RunAsync 的 OCE 分支当成"应用退出"而终止整个会话循环。
+            try
+            {
+                await completed.ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (!ct.IsCancellationRequested)
+            {
+                throw new IOException("会话重启");
+            }
         }
         finally
         {

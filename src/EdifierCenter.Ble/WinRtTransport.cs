@@ -1,3 +1,4 @@
+using EdifierCenter.Core;
 using EdifierCenter.Core.Model;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.Advertisement;
@@ -16,9 +17,11 @@ public sealed class WinRtTransport : IEdifierTransport
     private BluetoothLEAdvertisementWatcher? _watcher;
     private BluetoothLEAdvertisementWatcher? _rssiWatcher;
     private BluetoothLEDevice? _device;
+    private GattDeviceService? _service;
     private GattCharacteristic? _notify;
     private GattCharacteristic? _write;
     private ulong _address;
+    private TaskCompletionSource<ulong>? _scanFailure;
     private TaskCompletionSource _disconnectTcs =
         new(TaskCreationOptions.RunContinuationsAsynchronously);
     private volatile bool _disconnectRaised;
@@ -62,6 +65,9 @@ public sealed class WinRtTransport : IEdifierTransport
         }
         watcher.Received += new Windows.Foundation.TypedEventHandler<
             BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>(OnReceived);
+        watcher.Stopped += new Windows.Foundation.TypedEventHandler<
+            BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementWatcherStoppedEventArgs>(OnScanStopped);
+        _scanFailure = tcs;
         watcher.Start();
         try
         {
@@ -75,9 +81,23 @@ public sealed class WinRtTransport : IEdifierTransport
         }
         finally
         {
+            _scanFailure = null;
             watcher.Stop();
             watcher.Received -= new Windows.Foundation.TypedEventHandler<
                 BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementReceivedEventArgs>(OnReceived);
+            watcher.Stopped -= new Windows.Foundation.TypedEventHandler<
+                BluetoothLEAdvertisementWatcher, BluetoothLEAdvertisementWatcherStoppedEventArgs>(OnScanStopped);
+        }
+    }
+
+    private void OnScanStopped(BluetoothLEAdvertisementWatcher sender,
+        BluetoothLEAdvertisementWatcherStoppedEventArgs args)
+    {
+        // 蓝牙开关关闭 / 适配器错误会让 watcher 停止且不再收包——快速失败交给会话退避重连
+        if (args.Error != BluetoothError.Success)
+        {
+            FileLogger.Error($"BLE 扫描异常停止: {args.Error}");
+            _scanFailure?.TrySetException(new IOException($"BLE 扫描异常停止: {args.Error}"));
         }
     }
 
@@ -126,6 +146,7 @@ public sealed class WinRtTransport : IEdifierTransport
             throw new IOException($"订阅通知失败（status={cccd}）");
 
         _write = write;
+        _service = controlService; // 持有服务实例，防止 GC 回收导致 GATT 会话关闭
         _device.ConnectionStatusChanged += OnConnectionStatusChanged;
 
         StartRssiWatcher();
@@ -142,6 +163,14 @@ public sealed class WinRtTransport : IEdifierTransport
 
     private void StartRssiWatcher()
     {
+        // 重连时会再次进入本方法：先清理上一次的 watcher，避免被动扫描器随重连次数累积
+        if (_rssiWatcher is { } old)
+        {
+            try { old.Stop(); } catch { }
+            if (_rssiHandler is { } oldHandler) try { old.Received -= oldHandler; } catch { }
+            _rssiWatcher = null;
+            _rssiHandler = null;
+        }
         var watcher = new BluetoothLEAdvertisementWatcher { ScanningMode = BluetoothLEScanningMode.Passive };
         _rssiWatcher = watcher;
         _rssiHandler = new Windows.Foundation.TypedEventHandler<
@@ -201,6 +230,8 @@ public sealed class WinRtTransport : IEdifierTransport
         _device = null;
         _notify = null;
         _write = null;
+        if (_service is { } service) { try { service.Dispose(); } catch { } }
+        _service = null;
         await Task.CompletedTask;
     }
 
