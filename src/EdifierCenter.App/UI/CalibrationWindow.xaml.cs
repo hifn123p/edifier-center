@@ -16,7 +16,7 @@ public partial class CalibrationWindow : Window
                 new Uri("pack://application:,,,/Assets/app.ico"));
         }
         catch { /* 图标加载失败不影响功能 */ }
-        vm.Completed += Close;
+        // 注意：不在此订阅 vm.Completed 自动关窗——完成页需要展示摘要，由「完成」按钮关闭
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs e) => Close();

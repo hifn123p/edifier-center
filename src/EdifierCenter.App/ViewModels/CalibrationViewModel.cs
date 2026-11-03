@@ -180,6 +180,8 @@ public sealed class CalibrationViewModel : BindBase
             "结果已写入运行目录 config.json。可随时从托盘菜单重新运行向导。";
         Raise(nameof(Finished));
         Raise(nameof(Summary));
+        Raise(nameof(WizardVisibility));   // 切换到完成页（此前只抛 Finished，视图不会切换）
+        Raise(nameof(FinishedVisibility));
         Completed?.Invoke();
     }
 

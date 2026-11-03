@@ -31,6 +31,8 @@ public sealed class EdifierSession : IAsyncDisposable
         });
     private readonly List<byte[]> _recentFrames = [];
     private readonly object _frameGate = new();
+    private short _lastRssi = short.MinValue;
+    private DateTime _lastRssiTime = DateTime.MinValue;
     private TaskCompletionSource _restart = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private CancellationTokenSource? _cts;
     private Task? _loop;
@@ -47,7 +49,15 @@ public sealed class EdifierSession : IAsyncDisposable
         _transport = transport;
         _store = store;
         _transport.Notified += OnNotified;
-        _transport.RssiChanged += rssi => _store.Apply(s => s with { Rssi = rssi });
+        _transport.RssiChanged += rssi =>
+        {
+            // 节流：广播每秒可达十几次，变化 <3dB 且 2s 内的读数不刷新（避免 UI 刷新风暴）
+            var now = DateTime.UtcNow;
+            if (Math.Abs(rssi - _lastRssi) < 3 && (now - _lastRssiTime).TotalSeconds < 2) return;
+            _lastRssi = rssi;
+            _lastRssiTime = now;
+            _store.Apply(s => s with { Rssi = rssi });
+        };
     }
 
     public void Start()
@@ -63,7 +73,7 @@ public sealed class EdifierSession : IAsyncDisposable
         _cts.Cancel();
         if (_loop is { } loop)
         {
-            try { await loop; } catch { /* 取消路径 */ }
+            try { await loop.ConfigureAwait(false); } catch { /* 取消路径 */ }
         }
         _loop = null;
         State = LinkState.Idle;
@@ -94,7 +104,7 @@ public sealed class EdifierSession : IAsyncDisposable
                 SetState(backoffIndex == 0 ? LinkState.Scanning : LinkState.Reconnecting);
                 var scanTask = _transport.FindFirstAsync(_profile.Discovery.SearchServiceUuids, ct);
                 var heartbeat = ScanHeartbeatAsync(scanTask, ct);
-                var address = await scanTask;
+                var address = await scanTask.ConfigureAwait(false);
                 SetState(LinkState.Connecting);
                 await _transport.ConnectAsync(address, _profile, ct);
                 backoffIndex = 0;
@@ -105,7 +115,7 @@ public sealed class EdifierSession : IAsyncDisposable
                     Address = address,
                     DeviceName = _transport.DeviceName ?? s.DeviceName,
                 });
-                await RunReadyAsync(ct);
+                await RunReadyAsync(ct).ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {
@@ -119,7 +129,7 @@ public sealed class EdifierSession : IAsyncDisposable
             {
                 _store.Apply(s => s.Connected ? s with { Connected = false } : s);
             }
-            await OnDisconnectedAsync();
+            await OnDisconnectedAsync().ConfigureAwait(false);
             var delaySeconds = _profile.Session.ReconnectBackoffSeconds[
                 Math.Min(backoffIndex, _profile.Session.ReconnectBackoffSeconds.Length - 1)];
             backoffIndex++;
@@ -127,7 +137,7 @@ public sealed class EdifierSession : IAsyncDisposable
             try
             {
                 var delay = Task.Delay(TimeSpan.FromSeconds(delaySeconds), ct);
-                var completed = await Task.WhenAny(delay, _restart.Task);
+                var completed = await Task.WhenAny(delay, _restart.Task).ConfigureAwait(false);
                 if (completed != delay) backoffIndex = 0; // 手动重连不计退避
                 _restart = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             }
@@ -142,7 +152,7 @@ public sealed class EdifierSession : IAsyncDisposable
         var hinted = false;
         while (!scanTask.IsCompleted && !ct.IsCancellationRequested)
         {
-            try { await Task.Delay(TimeSpan.FromSeconds(10), ct); }
+            try { await Task.Delay(TimeSpan.FromSeconds(10), ct).ConfigureAwait(false); }
             catch (OperationCanceledException) { return; }
             if (scanTask.IsCompleted) return;
             Log($"扫描中… 已 {sw.Elapsed.TotalSeconds:0}s 未发现设备");
@@ -183,11 +193,11 @@ public sealed class EdifierSession : IAsyncDisposable
                 pollTask,
                 writerTask,
                 _transport.DisconnectedTask,
-                _restart.Task);
+                _restart.Task).ConfigureAwait(false);
             ct.ThrowIfCancellationRequested();
             if (completed == _restart.Task) throw new IOException("手动重连");
             // 断线 / 写失败等：异常上抛交由 RunAsync 统一走断线流程
-            await completed;
+            await completed.ConfigureAwait(false);
         }
         finally
         {
@@ -199,11 +209,11 @@ public sealed class EdifierSession : IAsyncDisposable
 
     private async Task WriterLoopAsync(CancellationToken ct)
     {
-        while (await _queue.Reader.WaitToReadAsync(ct))
+        while (await _queue.Reader.WaitToReadAsync(ct).ConfigureAwait(false))
         {
             while (_queue.Reader.TryRead(out var frame))
             {
-                await _transport.WriteAsync(frame, ct);
+                await _transport.WriteAsync(frame, ct).ConfigureAwait(false);
                 Log($"→ {Convert.ToHexString(frame)}");
             }
         }
@@ -212,7 +222,7 @@ public sealed class EdifierSession : IAsyncDisposable
     private async Task PollLoopAsync(CancellationToken ct)
     {
         using var timer = new PeriodicTimer(TimeSpan.FromSeconds(_profile.Session.PollIntervalSeconds));
-        while (await timer.WaitForNextTickAsync(ct))
+        while (await timer.WaitForNextTickAsync(ct).ConfigureAwait(false))
         {
             Enqueue(CommandId.GetVolume);
             Enqueue(CommandId.GetEq);

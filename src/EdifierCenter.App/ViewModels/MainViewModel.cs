@@ -51,10 +51,14 @@ public sealed class BandVm : BindBase
         {
             if (_syncing)
             {
-                Set(ref _gainDb, value);
+                if (Set(ref _gainDb, value)) Raise(nameof(GainText));
                 return;
             }
-            if (Set(ref _gainDb, value)) _onUserChange(this);
+            if (Set(ref _gainDb, value))
+            {
+                Raise(nameof(GainText));
+                _onUserChange(this);
+            }
         }
     }
 
@@ -213,8 +217,7 @@ public sealed class MainViewModel : BindBase
     {
         _suppressSync = true;
         try
-        {
-            IsConnected = s.Connected;
+        {            IsConnected = s.Connected;
             DeviceName = s.DeviceName;
             StatusText = s.Connected ? "已连接" : "未连接";
 
@@ -267,7 +270,35 @@ public sealed class MainViewModel : BindBase
         {
             _suppressSync = false;
         }
-        Raise(string.Empty); // 全量刷新绑定
+        RaiseUi(); // 定向刷新绑定（避免全量重绑定带来的 UI 抖动）
+    }
+
+    /// <summary>状态推送后的定向刷新列表（不含 Bands/SoundModes 集合，它们在重建时单独通知）。</summary>
+    private void RaiseUi()
+    {
+        Raise(nameof(IsConnected));
+        Raise(nameof(BannerVisibility));
+        Raise(nameof(DeviceName));
+        Raise(nameof(StatusText));
+        Raise(nameof(SignalLine));
+        Raise(nameof(InputLabel));
+        Raise(nameof(DecodeLabel));
+        Raise(nameof(HasDecode));
+        Raise(nameof(DecodeVisibility));
+        Raise(nameof(Volume));
+        Raise(nameof(VolumeText));
+        Raise(nameof(VolumeMax));
+        Raise(nameof(IsMuted));
+        Raise(nameof(MuteButtonText));
+        Raise(nameof(HasEq));
+        Raise(nameof(EqVisibility));
+        Raise(nameof(HasAcoustic));
+        Raise(nameof(AcousticVisibility));
+        Raise(nameof(LowCutoffHz));
+        Raise(nameof(SlopeIndex));
+        Raise(nameof(SpaceIndex));
+        Raise(nameof(DesktopOn));
+        Raise(nameof(SelectedSoundMode));
     }
 
     private void RebuildBands(CustomEqState eq)

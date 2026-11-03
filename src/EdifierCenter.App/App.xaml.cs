@@ -24,6 +24,7 @@ public partial class App : Application
     private SettingsService? _settings;
     private Mr5Profile? _profile;
     private MainViewModel? _mainVm;
+    private CalibrationWindow? _calibrationWindow;
     private bool _wizardShown;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -68,11 +69,8 @@ public partial class App : Application
 
         var vm = new MainViewModel(Dispatcher, profile, _store, _session, settings)
         {
-            ExitRequested = () =>
-            {
-                _tray?.Dispose();
-                Shutdown();
-            },
+            // 退出走 Shutdown() → OnExit 统一清理（托盘/会话/互斥体），避免在菜单回调里自毁 HwndSource
+            ExitRequested = Shutdown,
         };
         _mainVm = vm;
         vm.ShowCalibrationRequested = ShowCalibration;
@@ -92,18 +90,21 @@ public partial class App : Application
         FileLogger.Info("启动完成（托盘就绪）。");
     }
 
-    /// <summary>打开校准向导（首次连接自动触发；托盘菜单可随时重跑）。</summary>
+    /// <summary>打开校准向导（首次连接自动触发；托盘菜单可随时重跑；重复调用只激活已有窗口）。</summary>
     private void ShowCalibration()
     {
         if (_profile is null || _store is null || _session is null || _settings is null) return;
+        if (_calibrationWindow is { IsLoaded: true })
+        {
+            _calibrationWindow.Activate();
+            return;
+        }
         FileLogger.Info("打开校准向导");
         var calibrationVm = new CalibrationViewModel(Dispatcher, _profile, _store, _session, _settings);
         var window = new CalibrationWindow(calibrationVm);
-        calibrationVm.Completed += () =>
-        {
-            // 校准结果已写入 config.json 并覆盖 profile；刷新面板的标签显示
-            _mainVm?.RefreshFromStore();
-        };
+        _calibrationWindow = window;
+        window.Closed += (_, _) => _calibrationWindow = null;
+        calibrationVm.Completed += () => _mainVm?.RefreshFromStore();
         window.Show();
     }
 
@@ -124,14 +125,16 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        // 有界等待会话停止（会话内部已 ConfigureAwait(false)，不会与 UI 线程死锁）
         try
         {
-            _session?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+            _session?.StopAsync().Wait(TimeSpan.FromSeconds(3));
         }
         catch (Exception ex)
         {
             FileLogger.Error("会话停止异常", ex);
         }
+        try { _tray?.Dispose(); } catch { }
         SingleInstance.Release();
         base.OnExit(e);
     }
